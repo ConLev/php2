@@ -1,0 +1,1 @@
+<a href="viewImg.php?id={{ID}}"><img class="img" src="../{{URL}}" alt="{{TITLE}}"/></a>
