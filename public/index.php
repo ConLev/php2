@@ -53,7 +53,7 @@ class Clothes
     /**
      * метод для вывода товара
      */
-    private function view()
+    function view()
     {
         echo '<table style="border: 1px solid black; border-collapse: collapse">';
         echo '<thead>';
@@ -93,9 +93,44 @@ $product->call();
 
 class Shoes extends Clothes
 {
+    protected $column6;
+    protected $column7;
+    protected $shipping;
+    protected $discount;
+
+    function __construct($id, $brand, $size, $color, $price, $shipping, $discount)
+    {
+        parent::__construct($id, $brand, $size, $color, $price);
+        $this->column6 = 'Доставка';
+        $this->column7 = 'Скидка';
+        $this->shipping = $shipping;
+        $this->discount = $discount;
+    }
+
+    function view()
+    {
+        parent::view();
+        echo '<table style="border: 1px solid black; border-collapse: collapse">';
+        echo '<thead>';
+        echo '<tr>';
+        echo "<td colspan='2' style='text-align: center; padding: 5px'></td>";
+        echo '</tr>';
+        echo '<tr>';
+        echo "<td style='border: 1px solid black; padding: 5px'>$this->column6</td>";
+        echo "<td style='border: 1px solid black; padding: 5px'>$this->column7</td>";
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
+        echo "<tr>";
+        echo "<td style='border: 1px solid black; padding: 5px'>$this->shipping</td>";
+        echo "<td style='border: 1px solid black; padding: 5px'>$this->discount</td>";
+        echo '</tr>';
+        echo '</tbody>';
+        echo '</table></br>';
+    }
 }
 
-$shoes = new Shoes(2, 'Брэнд', '45', 'black', 100);
+$shoes = new Shoes(2, 'Брэнд', '45', 'black', 100, 'free', '20%');
 $shoes->call();
 
 //5. Дан код:
