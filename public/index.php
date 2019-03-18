@@ -1,6 +1,12 @@
 <?php
 
-require_once __DIR__ . '/../config/config.php';
+namespace App\Goods;
+require_once "../App/Goods/Goods.php";
+require_once "../App/Goods/DigitalGoods.php";
+require_once "../App/Goods/PieceGoods.php";
+require_once "../App/Goods/WeightGoods.php";
+
+use App\Goods as AppGoods;
 
 //1. Создать структуру классов ведения товарной номенклатуры.
 //
@@ -18,6 +24,25 @@ require_once __DIR__ . '/../config/config.php';
 //д) Что можно вынести в абстрактный класс, наследование?
 //
 
+$goods = ['id' => 1, 'name' => 'Ключ активации DrWeb', 'price' => 1999, 'count' => 1, 'amount' => 3];
+$digitalGoods = new AppGoods\DigitalGoods($goods);
+$digitalGoods->call();
 
+$goods = ['id' => 23, 'name' => 'Яйцо куриное', 'price' => 6, 'count' => 10, 'amount' => 26];
+$pieceGoods = new AppGoods\PieceGoods($goods);
+$pieceGoods->call();
+
+$goods = ['id' => 45, 'name' => 'Сахар-песок', 'price' => 39.9, 'count' => 3, 'amount' => 7];
+$weightGoods = new AppGoods\WeightGoods($goods);
+$weightGoods->call();
 
 //2. *Реализовать паттерн Singleton при помощи traits.
+
+namespace App\DB;
+require_once "../App/DB/DB.php";
+
+$db = DB::createConnection();
+
+echo'<pre>';
+var_dump(!empty($db));
+echo'</pre>';
