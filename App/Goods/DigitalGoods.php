@@ -9,34 +9,13 @@ namespace App\Goods;
 class DigitalGoods extends Goods
 {
     /**
-     * DigitalGoods constructor.
-     * @param $goods
-     */
-    function __construct($goods)
-    {
-        parent::__construct($goods);
-    }
-
-    /**
      * Возвращает финальную стоимость товара
-     * @param $price - цена за еденицу товара
-     * @param $count - кол-во
-     * @return int|float - финальная стоимость товара
+     * @param array $goods - товар
+     * @return float - финальная стоимость товара
      */
-    protected function getPrice(float $price, float $count): float
+    protected function getPrice(array $goods): float
     {
-        return $price;
-    }
-
-    /**
-     * Возвращает прибыль с продажи товара
-     * @param $price - финальная стоимость еденицы товара
-     * @param $amount - кол-во
-     * @return float|int - прибыль с продажи товара
-     */
-    protected static function getSalesRevenue(float $price, float $amount): float
-    {
-        return parent::getSalesRevenue($price, $amount);
+        return $goods['price'];
     }
 
     /**
@@ -53,7 +32,7 @@ class DigitalGoods extends Goods
      * Возвращает заголовок таблицы
      * @return mixed
      */
-    function renderHeaderTable()
+    protected function renderHeaderTable()
     {
         echo '<tr>';
         echo "<td style='border: 1px solid black; padding: 5px'>id</td>";
@@ -68,7 +47,7 @@ class DigitalGoods extends Goods
      * Возвращает тело таблицы
      * @return mixed
      */
-    function renderBodyTable()
+    protected function renderBodyTable()
     {
         echo "<tr data-id='{$this->goods['id']}'>";
         echo "<td style='border: 1px solid black; padding: 5px'>{$this->goods['id']}</td>";

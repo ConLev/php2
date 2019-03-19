@@ -4,7 +4,6 @@ namespace App\Goods;
 
 /**
  * Class Goods
- * @property string class
  * @package App\Goods
  */
 abstract class Goods
@@ -17,12 +16,11 @@ abstract class Goods
      * Goods constructor.
      * @param $goods
      */
-    protected function __construct(array $goods)
+    public function __construct(array $goods)
     {
-        $this->class = get_class($this);
         $this->goods = $goods;
-        $this->finalCost = $this->getPrice($goods['price'], $goods['count']);
-        $this->salesRevenue = $this->getSalesRevenue($this->getPrice($goods['price'], $goods['count']), $goods['amount']);
+        $this->finalCost = $this->getPrice($goods);
+        $this->salesRevenue = $this->getSalesRevenue($this->getPrice($goods), $this->getAmount($goods));
     }
 
     /**
@@ -30,10 +28,11 @@ abstract class Goods
      */
     private function view()
     {
+        $class = get_class($this);
         echo '<table style="border: 1px solid black; border-collapse: collapse">';
         echo '<thead>';
         echo '<tr>';
-        echo "<td colspan='6' style='text-align: center; padding: 5px'>$this->class</td>";
+        echo "<td colspan='6' style='text-align: center; padding: 5px'>$class</td>";
         echo '</tr>';
         $this->renderHeaderTable();
         echo '</thead>';
@@ -57,27 +56,36 @@ abstract class Goods
      */
     abstract protected function renderBodyTable();
 
-    function call()
+    public function call()
     {
         $this->view();
     }
 
     /**
      * Возвращает финальную стоимость товара
-     * @param $price - цена за еденицу товара
-     * @param $count - кол-во
-     * @return int|float - финальная стоимость товара
+     * @param array $goods - товар
      * метод должен быть переопределен в дочернем классе
+     * @return float|int - финальная стоимость товара
      */
-    abstract protected function getPrice(float $price, float $count): float;
+    abstract protected function getPrice(array $goods): float;
+
+    /**
+     * Возвращает количество проданного товара
+     * @param array $goods - товар
+     * @return int кол-во проданного товара
+     */
+    protected static function getAmount(array $goods): int
+    {
+        return $goods['amount'];
+    }
 
     /**
      * Возвращает прибыль с продажи товара
      * @param $price - финальная стоимость еденицы товара
-     * @param $amount - кол-во
+     * @param $amount - кол-во проданного товара
      * @return float|int - прибыль с продажи товара
      */
-    protected static function getSalesRevenue(float $price, float $amount): float
+    protected static function getSalesRevenue(float $price, int $amount): float
     {
         return $price * $amount;
     }

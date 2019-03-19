@@ -2,7 +2,8 @@
 
 namespace App\DB;
 
-final class DB
+// Не совсем уверен, что стоит делать класс DB final. Это не всегда хорошо.
+class DB
 {
     private static $_instance = null;
     private const DB_HOST = 'localhost';
@@ -73,7 +74,7 @@ final class DB
     {
         //если соединения с БД нет, создаем
         if (!$db) {
-            $db = createConnection();
+            $db = self::createConnection();
         }
 
         //выполняем запрос
@@ -99,7 +100,7 @@ final class DB
     static function show($sql, $db = null)
     {
         //получаем массив данных
-        $result = getAssocResult($sql, $db);
+        $result = self::getAssocResult($sql, $db);
         //если массив пустой выозвращаем null
         if (empty($result)) {
             return null;
@@ -129,7 +130,7 @@ final class DB
     static function insert($sql)
     {
         //создаем соединение с БД
-        $db = createConnection();
+        $db = self::createConnection();
 
         //выполняем запрос
         mysqli_query($db, $sql);
