@@ -24,7 +24,7 @@ use App\Goods as AppGoods;
 //д) Что можно вынести в абстрактный класс, наследование?
 //
 
-$goods = ['id' => 1, 'name' => 'Ключ активации DrWeb', 'price' => 1999, 'count' => 1, 'amount' => 3];
+$goods = ['id' => 1, 'name' => 'Ключ активации DrWeb', 'price' => 1999, 'amount' => 3];
 $digitalGoods = new AppGoods\DigitalGoods($goods);
 $digitalGoods->call();
 
@@ -43,6 +43,16 @@ require_once "../App/DB/DB.php";
 
 $db = DB::createConnection();
 
-echo'<pre>';
+echo '<pre>';
 var_dump(!empty($db));
-echo'</pre>';
+echo '</pre>';
+
+namespace App;
+require_once "../App/Singleton.php";
+
+MainObject::getInstance()->doAction();
+MainObject::getInstance()->doAction();
+
+MainObject2::getInstance()->doAction();
+MainObject2::getInstance()->doAction();
+MainObject2::getInstance()->doAction();
