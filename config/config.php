@@ -11,10 +11,11 @@ define('ENGINE_DIR', SITE_ROOT . 'engine/');
 define('WWW_DIR', SITE_ROOT . 'public/');
 define('TPL_DIR', SITE_ROOT . 'templates/');
 define('VENDOR_DIR', SITE_ROOT . 'vendor/');
-define('IMG_DIR', 'public/img/');
 
 //подключение файлов логики
 require_once VENDOR_DIR . 'autoload.php';
 require_once ENGINE_DIR . '/Traits/SingletonTrait.php';
 require_once ENGINE_DIR . '/Classes/TemplateEngine.php';
 require_once ENGINE_DIR . '/Classes/DB.php';
+
+require_once '../public/nav/navItem.php';

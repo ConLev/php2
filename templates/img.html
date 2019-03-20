@@ -1,0 +1,4 @@
+{% for image in data %}
+<img class="max_img" src="../{{image.url}}" alt="{{image.title}}"/>
+<p class="text">Количество просмотров: {{image.views}} <a class="gallery_link" href="/">Назад</a></p>
+{% endfor %}

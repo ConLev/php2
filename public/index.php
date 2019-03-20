@@ -10,14 +10,18 @@ require_once '../config/config.php';
 //$twig = TemplateEngine::getInstance()->twig;
 //$db = DB::getInstance();
 
+$navItems = getNav();
 try {
-    $template = TemplateEngine::getInstance()->twig->load('index.tpl');
-    $data = DB::getInstance()->fetchAll("SELECT * FROM `reviews`");
+    $template = TemplateEngine::getInstance()->twig->load('index.html');
+    $images = DB::getInstance()->fetchAll("SELECT * FROM `images` ORDER BY `images`.`views` DESC");
+    $year = date("Y");
 
     echo $template->render([
-        'name' => 'Clark Kent',
-        'username' => 'ckent',
-        'password' => 'krypt0n1te',
+        'title' => 'lesson_3',
+        'navItems' => $navItems,
+        'h1' => 'lesson_3',
+        'images' => $images,
+        'year' => $year,
     ]);
 
 } catch (\Exception $e) {
