@@ -1,23 +1,25 @@
 <?php
 
-require_once __DIR__ . '/../config/config.php';
+namespace engine;
 
-//1. Создать структуру классов ведения товарной номенклатуры.
-//
-//а) Есть абстрактный товар.
-//
-//б) Есть цифровой товар, штучный физический товар и товар на вес.
-//
-//в) У каждого есть метод подсчета финальной стоимости.
-//
-//г) У цифрового товара стоимость постоянная.
-//   У штучного товара стоимость зависит от количества штук,
-//   у весового – в зависимости от продаваемого количества в килограммах.
-//   У всех формируется в конечном итоге доход с продаж.
-//
-//д) Что можно вынести в абстрактный класс, наследование?
-//
+use engine\Classes\DB;
+use engine\Classes\TemplateEngine;
 
+require_once '../config/config.php';
 
+//$twig = TemplateEngine::getInstance()->twig;
+//$db = DB::getInstance();
 
-//2. *Реализовать паттерн Singleton при помощи traits.
+try {
+    $template = TemplateEngine::getInstance()->twig->load('index.tpl');
+    $data = DB::getInstance()->fetchAll("SELECT * FROM `reviews`");
+
+    echo $template->render([
+        'name' => 'Clark Kent',
+        'username' => 'ckent',
+        'password' => 'krypt0n1te',
+    ]);
+
+} catch (\Exception $e) {
+    die ('ERROR: ' . $e->getMessage());
+}
