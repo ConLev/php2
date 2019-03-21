@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/style/style.css">
+</head>
+<body>
+<nav class="nav">
+    <ul class="top_menu">
+        {% include 'navItem.html' %}
+        <li class="logout_list"><a class="logout_link" href="#">Выйти</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <h1>{{h1}}</h1>
+    <div class="content">
+        <div>{% include 'galleryItem.html' %}</div>
+    </div>
+</div>
+<footer class="footer">Все права защищены {{year}}</footer>
+</body>
+</html>

@@ -19,7 +19,7 @@ class DB
     {
     }
 
-    function __wakeup()
+    public function __wakeup()
     {
         $this->createConnection();
     }

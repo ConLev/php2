@@ -5,7 +5,7 @@ namespace engine;
 use engine\Classes\DB;
 use engine\Classes\TemplateEngine;
 
-require_once '../config/config.php';
+require_once '../../config/config.php';
 
 //$twig = TemplateEngine::getInstance()->twig;
 //$db = DB::getInstance();
