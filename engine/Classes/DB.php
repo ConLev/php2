@@ -28,4 +28,13 @@ class DB
         $sth->execute();
         return $data = $sth->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function fetchOne($sql)
+    {
+        $result = self::fetchAll($sql);
+        if (empty($result)) {
+            return null;
+        }
+        return $result[0];
+    }
 }

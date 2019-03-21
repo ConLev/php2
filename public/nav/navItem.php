@@ -9,7 +9,7 @@ function getNav()
         ],
         [
             'title' => 'Галлерея',
-            'url' => '#',
+            'url' => '/homework_3',
         ],
         [
             'title' => 'Новости',
