@@ -1,8 +1,8 @@
 <?php
 
-namespace engine\Classes;
+namespace App\Classes;
 
-use engine\Traits\SingletonTrait;
+use App\Traits\SingletonTrait;
 use \PDO;
 
 class DB
@@ -15,11 +15,13 @@ class DB
     {
         $this->pdo = new PDO('mysql:dbname=geek_brains_shop;host=localhost', 'geek_brains', '123123');
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->pdo->exec('SET NAMES utf8');
     }
 
-    public function exec($sql)
+    public function exec($sql, $param = [])
     {
-        $this->pdo->exec($sql);
+        $sth = $this->pdo->prepare($sql);
+        return $sth->execute($param);
     }
 
     public function fetchAll($sql)
@@ -31,10 +33,6 @@ class DB
 
     public function fetchOne($sql)
     {
-        $result = self::fetchAll($sql);
-        if (empty($result)) {
-            return null;
-        }
-        return $result[0];
+        return $this->fetchAll($sql)[0] ?? null;
     }
 }

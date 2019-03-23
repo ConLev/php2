@@ -1,9 +1,9 @@
 <?php
 
-namespace engine;
+namespace App;
 
-use engine\Classes\DB;
-use engine\Classes\TemplateEngine;
+use App\Classes\DB;
+use App\Classes\TemplateEngine;
 
 require_once '../config/config.php';
 

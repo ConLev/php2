@@ -1,8 +1,8 @@
 <?php
 
-namespace engine\Classes;
+namespace App\Classes;
 
-use engine\Traits\SingletonTrait;
+use App\Traits\SingletonTrait;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
