@@ -4,8 +4,8 @@ function getNav()
 {
     return $navItems = [
         [
-            'title' => 'Главная',
-            'url' => '/',
+            'title' => 'Личный кабинет',
+            'url' => '/userAccount.php',
         ],
         [
             'title' => 'Галлерея',
@@ -21,7 +21,7 @@ function getNav()
         ],
         [
             'title' => 'Товары',
-            'url' => '#',
+            'url' => '/products/readProducts.php?page=0',
         ],
         [
             'title' => 'Корзина',
@@ -29,7 +29,7 @@ function getNav()
         ],
         [
             'title' => 'Контакты',
-            'url' => '#',
+            'url' => '/contacts.php',
         ],
     ];
 }

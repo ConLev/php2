@@ -1,5 +1,9 @@
 <?php
 
+namespace App;
+
+use App\Classes\DB;
+
 /*
  * Файл работы API
  * Файл ожидает что в _POST придет apiMethod с задачей, которую нужно выполнить
@@ -68,7 +72,7 @@ if ($_POST['apiMethod'] === 'login') {
 
     //генерируем запрос и пытаемся найти пользователя
     $sql = "SELECT * FROM `users` WHERE `login` = '$login' AND `password` = '$password'";
-    $user = show($sql);
+    $user = $user = DB::getInstance()->fetchOne($sql);
 
     //Если пользователь найден, записываем информацию о пользователе в сессию,
     //что бы к ней можно было обратиться с любой страницы
@@ -84,34 +88,45 @@ if ($_POST['apiMethod'] === 'login') {
 //Обработка метода addToCart
 if ($_POST['apiMethod'] === 'addToCart') {
 
+    //у вас везде в апи есть обращение к $_SESSION['login'] но при этом нет проверки, что оно существует.
+
     //Получаем данные из postData
-    $id = $_POST['postData']['id'] ?? '';
-    $image = $_POST['postData']['img'] ?? '';
-    $name = $_POST['postData']['name'] ?? '';
-    $price = $_POST['postData']['price'] ?? '';
-    $quantity = $_POST['postData']['quantity'] ?? '';
+    $product_id = $_POST['postData']['product_id'] ?? '';
+
+    $user_id = $_SESSION['login']['id'];
+    $product = getProduct($product_id);
+    $price = $product['price'];
+    $discount = $product['discount'];
+    $subtotal = $price * $discount;
 
 //пытаемся добавить товар в корзину
-    $cartItem = showCartItem($id);
-    addToCart($id, $name, $price, $image, $quantity);
-    $amount = (!$cartItem['id']) ? $quantity : ++$cartItem['quantity'];
-    $message = (!$cartItem['id']) ? "Товар с ID($id) добавлен в корзину" :
-        "Количество товара с ID($id) в корзине $amount шт.";
-    //устанавливаем новое куки
-    setcookie("cart[$id]", $amount);
-    success($message);
+    $cartItem = showCartItem($product_id, $user_id);
+    (!isset($cartItem['quantity'])) ? addToCart($user_id, $product_id, $subtotal)
+        : error("Вы уже добавили данный товар.");
+    $cartItem = showCartItem($product_id, $user_id);
+    (isset($cartItem['quantity'])) ? success("Товар с ID($product_id) добавлен в корзину.")
+        : error('Что-то пошло не так');
 }
+//В вашем случае, если товар в корзину уже был добавлен, то сначала выведется "Вы уже добавляли данный товар в корзину.
+// Потом снова выполнится запрос show и выведится "Товар добавлен".
+//
+//Мы предполагаем, что addToCart Должен возвращать true либо false если товар добавлен, либо произошла ошибка.
+//Тогда нам не придется делать повторный запрос show.
+//А он в свою очередь проверяет true/false в зависимости что ему ответила БД на insert
 
 //Обработка метода updateCart
 if ($_POST['apiMethod'] === 'updateCart') {
 
+    $user_id = $_SESSION['login']['id'];
+
     //Получаем данные из postData
     $id = $_POST['postData']['id'] ?? '';
     $quantity = $_POST['postData']['quantity'] ?? '';
-    $price = $_POST['postData']['price'] ?? '';
 
-    updateCartItem($id, $quantity, $price);
-    setcookie("cart[$id]", $quantity);
+    $product = getProduct($id);
+    $price = $product['price'];
+    $discount = $product['discount'];
+    updateCartItem($user_id, $id, $quantity, $price, $discount);
     success();
 }
 
@@ -119,15 +134,17 @@ if ($_POST['apiMethod'] === 'updateCart') {
 if ($_POST['apiMethod'] === 'removeFromCart') {
 
     //Получаем id товара из postData
-    $id = $_POST['postData']['id'] ?? '';
+    $product_id = $_POST['postData']['id'] ?? '';
 
-    $showCartItem = showCartItem($id);
+    $user_id = $_SESSION['login']['id'];
+
+    $showCartItem = showCartItem($product_id, $user_id);
 
 //если в корзине нет товара с полученным id
-    if (!$showCartItem['id']) {
+    if (!$showCartItem['product_id']) {
         error("Товар с ID($id) в корзине отсутствует");
     } else {
-        removeFromCart((int)$id);
+        removeFromCart($product_id, $user_id);
         success();
     }
 }
@@ -135,12 +152,15 @@ if ($_POST['apiMethod'] === 'removeFromCart') {
 //Обработка метода clearCart
 if ($_POST['apiMethod'] === 'clearCart') {
 
-    clearCart();
+    $user_id = $_SESSION['login']['id'];
+    clearCart($user_id);
     success();
 }
 
 //Обработка метода createOrder
 if ($_POST['apiMethod'] === 'createOrder') {
+
+    //только тут проверка есть
 
     //если пользователь не авторизован, перенаправляем его на форму аутентификации
     if (empty($_SESSION['login'])) {
@@ -149,8 +169,11 @@ if ($_POST['apiMethod'] === 'createOrder') {
 
     $user_id = (int)$_SESSION['login']['id'];
 
+    $sql = "SELECT * FROM `cart` WHERE `user_id` = $user_id";
+    $cart = getCart($sql);
+
 //если корзина пуста выводим ошибку
-    if (empty($_COOKIE['cart'])) {
+    if (empty($cart)) {
         error("Корзина пуста");
         exit();
     }
@@ -167,9 +190,9 @@ if ($_POST['apiMethod'] === 'createOrder') {
 
 //генерируем запрос в БД
     $values = [];
-    foreach ($_COOKIE['cart'] as $productId => $amount) {
-        $productId = (int)$productId;
-        $amount = (int)$amount;
+    foreach ($cart as $product) {
+        $productId = $product['product_id'];
+        $amount = $product['quantity'];
         $values[] = "($orderId, $productId, $amount)";
     }
 
@@ -180,11 +203,7 @@ if ($_POST['apiMethod'] === 'createOrder') {
 //выполняем запрос
     if (execQuery($sql)) {
         //очищаем корзину
-        clearCart();
-        //очищаем куки корзины
-        foreach ($_COOKIE['cart'] as $productId => $amount) {
-            setcookie("cart[$productId]", null, -1, '/');
-        }
+        clearCart($user_id);
         success();
 //        success("Заказ успешно создан");
     } else {
@@ -196,9 +215,27 @@ if ($_POST['apiMethod'] === 'createOrder') {
 if ($_POST['apiMethod'] === 'updateStatus') {
 
     //Получаем данные из postData
-    $orderId = $_POST['postData']['order_id'] ?? '';
+    $order_id = $_POST['postData']['order_id'] ?? '';
     $status = $_POST['postData']['status'] ?? '';
 
-    updateStatus($orderId, $status);
-    success();
+    //по хорошему нужно еще проверять, что пользователь авторизован и имеет достаточно прав на эта действие
+
+    (updateStatus($order_id, $status)) ? success() : error("api: 219");
+}
+
+//Обработка метода removeOrder
+if ($_POST['apiMethod'] === 'removeOrder') {
+
+    //Получаем данные из postData
+    $order_id = $_POST['postData']['order_id'] ?? '';
+
+    //и тут тоже проверить, что пользователь имеет право
+
+    (removeOrder($order_id)) ? success() : error("api: 216");
+}
+
+//Обработка метода nextPage
+if ($_POST['apiMethod'] === 'nextPage') {
+    $page = (int)$_POST['postData']['page'] ?? '';
+    success(++$page);
 }

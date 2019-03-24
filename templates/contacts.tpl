@@ -1,1 +1,0 @@
-<a class="link" href="http://levconst.ru">levconst.ru</a>

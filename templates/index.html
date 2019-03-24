@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head %}{% endblock %}
     <meta charset="UTF-8">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/style/style.css">
@@ -9,15 +10,18 @@
 <nav class="nav">
     <ul class="top_menu">
         {% include 'navItem.html' %}
-        <li class="logout_list"><a class="logout_link" href="#">Выйти</a></li>
+        <li class="logout_list"><a class="logout_link" href="/logout.php">Выйти</a></li>
     </ul>
 </nav>
 <div class="container">
+    {% block container %}
     <h1>{{h1}}</h1>
     <div class="content">
-        <div>{% include 'galleryItem.html' %}</div>
+        {% block content %}{% endblock %}
     </div>
+    {% endblock %}
 </div>
 <footer class="footer">Все права защищены {{year}}</footer>
+{% block script %}{% endblock %}
 </body>
 </html>
