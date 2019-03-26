@@ -21,7 +21,7 @@ function getNav()
         ],
         [
             'title' => 'Товары',
-            'url' => '/products/readProducts.php?page=0',
+            'url' => '/products/readProducts.php',
         ],
         [
             'title' => 'Корзина',

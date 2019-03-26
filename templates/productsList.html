@@ -1,0 +1,23 @@
+{% for product in products %}
+<section class="item-product">
+    <a href="/products/showProduct.php?id={{product.id}}" class="product">
+        <img class="product-img" src="/{{product.image}}" alt="product_img">
+        <div class="product-text">
+            <h5 class="product-name">{{product.name}}</h5>
+            <span class="product-price">$ {{product.price}}</span>
+            <span class="product-comment">☆☆☆☆☆</span>
+        </div>
+    </a>
+    <div class="item-add_top">
+        <a href="#" class="item-add_link_top" data-id="{{product.id}}" data-img="{{product.image}}"
+           data-name="{{product.name}}" data-price="{{product.price}}" data-quantity="1">Add to Cart</a>
+    </div>
+    {% if admin %}
+    <div class="item-add_bottom">
+        <a href="/products/createProduct.php" class="item-add_link_bottom">Create</a>
+        <a href="/products/updateProduct.php?id={{product.id}}" class="item-add_link_bottom">Update</a>
+        <a href="/products/deleteProduct.php?id={{product.id}}" class="item-add_link_bottom">Delete</a>
+    </div>
+    {% endif %}
+</section>
+{% endfor %}

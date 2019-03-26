@@ -1,27 +1,12 @@
 {% extends 'index.html' %}
 
 {% block container %}
-<article>
+<article style="padding-bottom: 20px">
     <h3 class="heading-items">Featured Items</h3>
     <p class="tac">Shop for items based on what we featured in this week</p>
     <p class="message">{{message}}</p>
     <div class="box-product">
-        {% for product in products %}
-        <section class="item-product">
-            <a href="/products/showProduct.php?id={{product.id}}" class="product">
-                <img class="product-img" src="/{{product.image}}" alt="product_img">
-                <div class="product-text">
-                    <h5 class="product-name">{{product.name}}</h5>
-                    <span class="product-price">$ {{product.price}}</span>
-                    <span class="product-comment">☆☆☆☆☆</span>
-                </div>
-            </a>
-            <div class="item-add_top">
-                <a href="#" class="item-add_link_top" data-id="{{product.id}}" data-img="{{product.image}}"
-                   data-name="{{product.name}}" data-price="{{product.price}}" data-quantity="1">Add to Cart</a>
-            </div>
-        </section>
-        {% endfor %}
+        {% include 'productsList.html' %}
     </div>
     <input class="next_page" type="button" name="next_page" value="Next page" data-page="{{page}}">
 </article>
@@ -57,27 +42,25 @@
                 }
             });
         });
-        $("article").on('click', '.next_page', e => {
-            e.preventDefault();
-            $.post({
-                url: '/api.php',
-                data: {
-                    apiMethod: 'nextPage',
-                    postData: {
-                        page: $(e.currentTarget).data('page'),
-                    }
-                },
+
+        //Функция AJAX загрузки товаров
+        function getProducts() {
+            $.ajax({
+                url: "/products/readProducts.php?rawProducts=1&page=" + ++currentPage,
                 success: function (data) {
-                    if (data.data) {
-                        let nextPage = data['data'];
-                        window.location.replace("/products/readProducts.php?page=" + nextPage);
-                    }
-                    if (data.error) {
-                        $message_field.text(data['error_text']);
+                    if (data.length) {
+                        $productsList.append(data);
+                    } else {
+                        $nextPage.hide();
                     }
                 }
-            });
-        });
+            })
+        }
+
+        const $productsList = $('.box-product');
+        const $nextPage = $('.next_page');
+        let currentPage = 0;
+        $nextPage.on('click', getProducts);
     });
 </script>
 {% endblock %}
