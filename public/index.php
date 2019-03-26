@@ -1,5 +1,9 @@
 <?php
 
-require_once '../config/config.php';
+require_once __DIR__ . '/../config/config.php';
 
-include 'login.php';
+$app = \App\App::getInstance();
+
+$app->run();
+
+//include 'login.php';
