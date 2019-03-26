@@ -204,7 +204,7 @@ h3 {
     margin-bottom: 30px;
 }
 
-.reviews_submit, .reviews_reset, .update_submit, .user_account_submit {
+.reviews_submit, .reviews_reset, .update_submit, .user_account_submit, .next_page {
     background: #9f9f9f;
     color: #fff;
     margin-right: 10px;
@@ -216,7 +216,7 @@ h3 {
     cursor: pointer;
 }
 
-.reviews_submit:hover, .reviews_reset:hover, .update_submit:hover, .user_account_submit:hover {
+.reviews_submit:hover, .reviews_reset:hover, .update_submit:hover, .user_account_submit:hover, .next_page:hover {
     border: 1px solid #f16d7f;
     background: #f16d7f;
 
