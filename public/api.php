@@ -233,9 +233,3 @@ if ($_POST['apiMethod'] === 'removeOrder') {
 
     (removeOrder($order_id)) ? success() : error("api: 216");
 }
-
-//Обработка метода nextPage
-if ($_POST['apiMethod'] === 'nextPage') {
-    $page = (int)$_POST['postData']['page'] ?? '';
-    success(++$page);
-}
