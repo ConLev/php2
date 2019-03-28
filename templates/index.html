@@ -9,8 +9,9 @@
 <body>
 <nav class="nav">
     <ul class="top_menu">
-        {% include 'navItem.html' %}
-        <li class="logout_list"><a class="logout_link" href="/logout.php">Выйти</a></li>
+        {% block menu %}
+        <li class="login_list"><a class="login_link" href="/authentication/login/">Войти</a></li>
+        {% endblock %}
     </ul>
 </nav>
 <div class="container">

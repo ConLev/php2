@@ -15,5 +15,4 @@ define('VENDOR_DIR', SITE_ROOT . 'vendor/');
 //подключение файлов логики
 require_once VENDOR_DIR . 'autoload.php';
 
-require_once WWW_DIR . '/nav/navItem.php';
 require_once ENGINE_DIR . '/cart.php';

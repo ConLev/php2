@@ -13,4 +13,15 @@ abstract class Model
         $table = static::$table;
         return DB::getInstance()->fetchAll("SELECT * FROM $table");
     }
+
+    public static function fetchOne()
+    {
+        $table = static::$table;
+        return DB::getInstance()->fetchOne("SELECT * FROM $table");
+    }
+
+    public static function exec($sql, $param)
+    {
+        return DB::getInstance()->exec($sql, $param);
+    }
 }
