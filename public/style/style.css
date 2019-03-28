@@ -64,7 +64,7 @@ body {
     display: none;
 }
 
-.logout_link {
+.logout_link, .login_link {
     background: #9f9f9f;
     color: #fff;
     margin-top: -5px;
@@ -75,17 +75,17 @@ body {
     text-decoration: none;
 }
 
-.logout_link:hover {
+.logout_link:hover, .login_link:hover {
     background: #f16d7f;
     border-color: #f16d7f;
     box-shadow: 0 0 5px 1px #f16d7f;
 }
 
-.logout_link:active {
+.logout_link:active, .login_link:active {
     box-shadow: none;
 }
 
-.logout_list {
+.logout_list, .login_list {
     list-style-type: none;
 }
 
@@ -170,6 +170,12 @@ h3 {
 
 .comment_author, .user_account_text {
     color: #f16d7f;
+}
+
+.user_account_header {
+    color: grey;
+    font-size: 16px;
+    padding: 10px 0;
 }
 
 .user_account_box {

@@ -1,5 +1,8 @@
 {% extends 'index.html' %}
 
+{% block menu %}
+{% include 'navItem.html' %}
+{% endblock %}
 {% block container %}
 <h1>{{h1}}</h1>
 <div class="user_account_box">
@@ -8,7 +11,14 @@
 <div class="user_account_box">
     <span class="text">Ваш логин: </span><span class="user_account_text">{{login}}</span>
 </div>
-{% block content %}{{content}}{% endblock %}
+{% block content %}
+<div style="padding-top: 50px">
+    <h5 class="user_account_header">Вы недавно смотрели:</h5>
+    {% for page in pages %}
+    <p class="user_account_text">{{page}}</p>
+    {% endfor %}
+</div>
+{% endblock %}
 {% endblock %}
 {% block script %}
 <script src="/js/jquery-3.3.1.min.js"></script>

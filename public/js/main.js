@@ -27,7 +27,7 @@ function login() {
         //data - приходят те данные, которые прислал сервер
         success: function (data) {
             if (data.data) {
-                window.location.replace('/userAccount.php');
+                window.location.replace('/account/');
             }
             if (data.error) {
                 $message_field.text(data['error_text']);

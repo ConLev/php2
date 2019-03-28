@@ -6,8 +6,17 @@ class IndexController extends Controller
 {
     protected $template = 'index.html';
 
-    public function index($data = [])
+    public function index()
     {
-        echo $this->render();
+        try {
+            echo $this->render([
+                'title' => 'PHP_2',
+                'h1' => 'PHP2',
+                'year' => date("Y"),
+            ]);
+
+        } catch (\Exception $e) {
+            die ('ERROR: ' . $e->getMessage());
+        }
     }
 }

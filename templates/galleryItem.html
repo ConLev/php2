@@ -1,5 +1,9 @@
 {% extends 'index.html' %}
 
+{% block menu %}
+{% include 'navItem.html' %}
+{% endblock %}
+
 {% block content %}
 {% for image in images %}
 <a href="viewImg.php?id={{image.id}}"><img class="img" src="../{{image.url}}" alt="{{image.title}}"/></a>

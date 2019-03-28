@@ -8,6 +8,8 @@ abstract class Controller
 {
     protected $template;
     protected $twig;
+    protected $userName;
+    protected $userLogin;
 
     public function __construct()
     {
