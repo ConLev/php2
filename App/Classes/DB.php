@@ -3,7 +3,7 @@
 namespace App\Classes;
 
 use App\Traits\SingletonTrait;
-use \PDO;
+use PDO;
 
 class DB
 {
@@ -24,11 +24,11 @@ class DB
         return $sth->execute($param);
     }
 
-    public function fetchAll($sql)
+    public function fetchAll(string $sql): array
     {
         $sth = $this->pdo->prepare($sql);
         $sth->execute();
-        return $data = $sth->fetchAll(PDO::FETCH_ASSOC);
+        return $data = $sth->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function fetchOne($sql)

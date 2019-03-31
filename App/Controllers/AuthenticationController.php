@@ -39,12 +39,18 @@ class AuthenticationController extends Controller
 
         //Если логин и пароль переданы пытаемся авторизоваться
         if ($data['login'] && $data['password']) {
-            //преобразуем пароль в хэш
-            $password = md5($data['password']);
-            //получаем пользователя из базы
-            Authentication::$login = $data['login'];
-            Authentication::$password = $password;
-            $user = Authentication::fetchOne();
+            $user = Authentication::getOne([
+                [
+                    'col' => 'login',
+                    'oper' => '=',
+                    'value' => $data['login']
+                ],
+                [
+                    'col' => 'password',
+                    'oper' => '=',
+                    'value' => md5($data['password'])
+                ]
+            ]);
 
             //если пользователь найден. Записываем его в сессию
             if ($user) {

@@ -19,7 +19,7 @@ abstract class Controller
         $this->twig = Templater::getInstance()->twig;
         $this->app = App::getInstance();
         if (isset($this->app->session['login'])) {
-            $this->admin = $this->app->session['login']['admin'] ? 1 : 0;
+            $this->admin = $this->app->session['login']->admin ? 1 : 0;
         }
 
         $story = isset($_COOKIE['story']) ? unserialize($_COOKIE['story']) : [];

@@ -18,9 +18,7 @@ class ProductsController extends Controller
             $this->template = $rawProducts ? 'productsList.html' : 'productsPage.html';
             $page = (int)($_GET['page'] ?? 0);
             $startPage = $page * $perPage;
-            Products::$perPage = $perPage;
-            Products::$startPage = $startPage;
-            $products = Products::fetchAll();
+            $products = Products::get([], [], $perPage, $startPage);
 
             return $this->render([
                 'title' => 'products',
@@ -45,7 +43,6 @@ class ProductsController extends Controller
                 exit();
             }
 
-            $new_id = $_POST['id'] ?? '';
             $name = $_POST['name'] ?? '';
             $description = $_POST['description'] ?? '';
             $price = $_POST['price'] ?? '';
@@ -53,20 +50,14 @@ class ProductsController extends Controller
             $h1 = 'Обновить товар';
 
             $this->template = $template = 'updateProduct.html';
-            Products::$id = $current_id;
-            $product = Products::fetchOne();
+            $product = Products::getByKey($current_id);
 
-            if ($new_id && $name && $description && $price && $image) {
+            if ($name && $description && $price && $image) {
                 //пытаемся обновить товар
-                $sql = "UPDATE `products` SET `id` = :id, `name` = :name, 
-                      `description` = :description, `price` = :price, `image` = :image 
-WHERE `products`.`id` = :current_id";
-
-                $param = ['id' => (int)$new_id, 'name' => $name, 'description' => $description,
+                $attributes = ['id' => (int)$current_id, 'name' => $name, 'description' => $description,
                     'price' => $price, 'image' => $image, 'current_id' => $current_id];
-
-                $result = Products::exec($sql, $param);
-
+                $product = new Products($attributes);
+                $result = $product->save();
                 //при успешном обновлении возвращаемся на страницу просмотра товаров
                 if ($result) {
                     header("Location: /products/", TRUE, 301);
@@ -90,7 +81,6 @@ WHERE `products`.`id` = :current_id";
 
     public function create()
     {
-        $id = $_POST['id'] ?? '';
         $name = $_POST['name'] ?? '';
         $description = $_POST['description'] ?? '';
         $price = $_POST['price'] ?? '';
@@ -100,15 +90,11 @@ WHERE `products`.`id` = :current_id";
         try {
             $this->template = $template = 'createProduct.html';
 
-            if ($id && $name && $description && $price && $image) {
+            if ($name && $description && $price && $image) {
                 //пытаемся добавить товар
-                $sql = "INSERT INTO `products` (`id`, `name`, `description`, `price`, `image`) 
-VALUES (:id, :name, :description, :price, :image)";
-
-                $param = ['id' => (int)$id, 'name' => $name, 'description' => $description, 'price' => $price, 'image' => $image];
-
-                $result = Products::exec($sql, $param);
-
+                $attributes = ['name' => $name, 'description' => $description, 'price' => $price, 'image' => $image];
+                $product = new Products($attributes);
+                $result = $product->save();
                 //при успешном добавлении товара возвращаемся на страницу просмотра товаров
                 if ($result) {
                     header("Location: /products/", TRUE, 301);
@@ -137,8 +123,7 @@ VALUES (:id, :name, :description, :price, :image)";
 
         try {
             $this->template = $template = 'showProduct.html';
-            Products::$id = $id;
-            $product = Products::fetchOne();
+            $product = Products::getByKey($id);
 
             return $this->render([
                 'title' => "product_$id",
@@ -157,11 +142,8 @@ VALUES (:id, :name, :description, :price, :image)";
         $id = (int)$_GET['id'] ?? '';
 
         try {
-            $sql = "DELETE FROM `products` WHERE `products`.`id` = :id";
-
             $param = ['id' => $id];
-
-            $result = Products::exec($sql, $param);
+            $result = Products::delete($param);
 
             if ($result) {
                 header("Location: /products/", TRUE, 301);

@@ -12,8 +12,8 @@ class AccountController extends Controller
 
     public function __construct()
     {
-        $this->userLogin = $_SESSION['login']['login'];
-        $this->userName = $_SESSION['login']['name'];
+        $this->userLogin = $_SESSION['login']->login;
+        $this->userName = $_SESSION['login']->name;
         Controller::__construct();
     }
 

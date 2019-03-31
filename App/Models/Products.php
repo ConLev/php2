@@ -1,4 +1,4 @@
-<?php /** @noinspection SqlResolve */
+<?php
 
 namespace App\Models;
 
@@ -7,27 +7,51 @@ use App\Classes\DB;
 class Products extends Model
 {
     protected static $table = 'products';
-    public static $perPage;
-    public static $startPage;
-    public static $id;
 
-    public static function fetchAll()
-    {
-        $table = static::$table;
-        $perPage = static::$perPage;
-        $startPage = static::$startPage;
-        return DB::getInstance()->fetchAll("SELECT * FROM $table LIMIT $startPage, $perPage");
-    }
+    protected static $schema = [
+        [
+            'name' => 'id',
+            'type' => 'int'
+        ],
+        [
+            'name' => 'name',
+            'type' => 'string'
+        ],
+        [
+            'name' => 'description',
+            'type' => 'string'
+        ],
+        [
+            'name' => 'price',
+            'type' => 'float'
+        ],
+        [
+            'name' => 'image',
+            'type' => 'string'
+        ],
+        [
+            'name' => 'dateCreate',
+            'type' => 'string',
+            'nullable' => true,
+        ],
+        [
+            'name' => 'dateChange',
+            'type' => 'string',
+            'nullable' => true,
+        ],
+        [
+            'name' => 'isActive',
+            'type' => 'bool'
+        ],
+        [
+            'name' => 'categoryId',
+            'type' => 'int'
+        ]
+    ];
 
-    public static function fetchOne()
+    public static function delete($param)
     {
-        $table = static::$table;
-        $id = static::$id;
-        return DB::getInstance()->fetchOne("SELECT * FROM $table WHERE `id` = $id");
-    }
-
-    public static function exec($sql, $param)
-    {
+        $sql = "DELETE FROM `products` WHERE `products`.`id` = :id";
         return DB::getInstance()->exec($sql, $param);
     }
 }
