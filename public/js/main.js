@@ -1,39 +1,49 @@
-﻿//Функция AJAX авторизации
-function login() {
-    //Получаем input'ы логина и пароля
-    const $login_input = $('[name="login"]');
-    const $password_input = $('[name="password"]');
+﻿$(document).ready(() => {
 
-    //Получаем значение login и password
-    const login = $login_input.val();
-    const password = $password_input.val();
+    function request(path, data, cb) {
+        $.post({
+            url: path,
+            data: data,
+            success: function (data) {
+                //Вариант с json
+                if (data.error) {
+                    message(data['error_text']);
+                } else {
+                    cb(data.data);
+                }
+            }
+        })
+    }
+
+    function message(message) {
+        $message_field.text(message);
+
+        setTimeout(() => {
+            $message_field.text('');
+        }, 3000);
+    }
+
+    function login() {
+        //Получаем input'ы логина и пароля
+        const $login_input = $('[name="login"]');
+        const $password_input = $('[name="password"]');
+
+        //Получаем значение login и password
+        const login = $login_input.val();
+        const password = $password_input.val();
+
+        request('/api/authentication/login/', {
+            login: login,
+            password: password
+        }, function () {
+            location.replace('/account/');
+        });
+    }
 
     //Инициализируем поле для сообщений
-    const $message_field = $('.login_message');
+    const $message_field = $('.message');
 
-    //Вызываем функцию jQuery AJAX с методом POST
-    //Передаем туда url где будет обрабатываться API
-    //и data которое будет помещена в $_POST
-    //success - вызывается при успешном ответе от сервера
-    $.post({
-        url: '/api.php',
-        data: {
-            apiMethod: 'login',
-            postData: {
-                login: login,
-                password: password
-            }
-        },
-        //data - приходят те данные, которые прислал сервер
-        success: function (data) {
-            if (data.data) {
-                window.location.replace('/account/');
-            }
-            if (data.error) {
-                $message_field.text(data['error_text']);
-                $login_input.val('');
-                $password_input.val('');
-            }
-        },
-    });
-}
+    //Login
+    const $loginBtn = $('.user_account_submit');
+    $loginBtn.on('click', login);
+});

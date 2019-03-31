@@ -1,8 +1,5 @@
 <?php
 
-//Стартуем сессию
-session_start();
-
 //инициализация констант дерикторий
 define('SITE_ROOT', __DIR__ . '/../');
 define('CONFIG_DIR', SITE_ROOT . 'config/');
