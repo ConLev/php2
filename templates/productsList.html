@@ -9,8 +9,9 @@
         </div>
     </a>
     <div class="item-add_top">
-        <a href="#" class="item-add_link_top" data-id="{{product.id}}" data-img="{{product.image}}"
-           data-name="{{product.name}}" data-price="{{product.price}}" data-quantity="1">Add to Cart</a>
+        <a href="#" class="item-add_link_top" data-id="{{product.id}}" data-image="{{product.image}}"
+           data-name="{{product.name}}" data-price="{{product.price}}" data-discount={{product.discount}}
+           data-quantity="1">Add to Cart</a>
     </div>
     {% if admin %}
     <div class="item-add_bottom">

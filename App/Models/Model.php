@@ -19,6 +19,12 @@ abstract class Model
     protected static $primaryKey = 'id';
 
     /**
+     * Имя вторичного ключа
+     * @var string $secondaryKey
+     */
+    protected static $secondaryKey;
+
+    /**
      * Схема модели
      * [
      *   'name' => string, //название поля в БД
@@ -240,8 +246,9 @@ abstract class Model
     {
         $table = static::$table;
         $primary = static::$primaryKey;
+        $secondary = static::$secondaryKey;
         //если primary задан значит Update иначе Insert
-        if (!empty($this->attributes[$primary])) {
+        if (!empty($this->attributes[$primary]) || !empty($this->attributes[$secondary])) {
             //update
 
             //TODO установить dateChange
@@ -250,8 +257,8 @@ abstract class Model
             $queries = [];
 
             foreach (static::$schema as $field) {
-                //Не даем изменить primaryKey
-                if ($field['name'] === $primary) {
+                //Не даем изменить primaryKey и secondaryKey
+                if ($field['name'] === $primary && $field['name'] === $secondary) {
                     continue;
                 }
                 $value = (string)$this->attributes[$field['name']];
@@ -261,6 +268,9 @@ abstract class Model
 
             $sql .= implode(', ', $queries);
             $sql .= " WHERE $primary = {$this->attributes[$primary]}";
+            if ($secondary) {
+                $sql .= " AND $secondary = {$this->attributes[$secondary]}";
+            }
         } else {
             //insert
             $sql = "INSERT INTO $table ";

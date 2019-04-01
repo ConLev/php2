@@ -26,6 +26,10 @@ class Products extends Model
             'type' => 'float'
         ],
         [
+            'name' => 'discount',
+            'type' => 'float'
+        ],
+        [
             'name' => 'image',
             'type' => 'string'
         ],

@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Classes\DB;
-
 //Обработка метода addToCart
 if ($_POST['apiMethod'] === 'addToCart') {
 
@@ -32,49 +30,6 @@ if ($_POST['apiMethod'] === 'addToCart') {
 //Мы предполагаем, что addToCart Должен возвращать true либо false если товар добавлен, либо произошла ошибка.
 //Тогда нам не придется делать повторный запрос show.
 //А он в свою очередь проверяет true/false в зависимости что ему ответила БД на insert
-
-//Обработка метода updateCart
-if ($_POST['apiMethod'] === 'updateCart') {
-
-    $user_id = $_SESSION['login']['id'];
-
-    //Получаем данные из postData
-    $id = $_POST['postData']['id'] ?? '';
-    $quantity = $_POST['postData']['quantity'] ?? '';
-
-    $product = getProduct($id);
-    $price = $product['price'];
-    $discount = $product['discount'];
-    updateCartItem($user_id, $id, $quantity, $price, $discount);
-    success();
-}
-
-//Обработка метода removeFromCart
-if ($_POST['apiMethod'] === 'removeFromCart') {
-
-    //Получаем id товара из postData
-    $product_id = $_POST['postData']['id'] ?? '';
-
-    $user_id = $_SESSION['login']['id'];
-
-    $showCartItem = showCartItem($product_id, $user_id);
-
-//если в корзине нет товара с полученным id
-    if (!$showCartItem['product_id']) {
-        error("Товар с ID($id) в корзине отсутствует");
-    } else {
-        removeFromCart($product_id, $user_id);
-        success();
-    }
-}
-
-//Обработка метода clearCart
-if ($_POST['apiMethod'] === 'clearCart') {
-
-    $user_id = $_SESSION['login']['id'];
-    clearCart($user_id);
-    success();
-}
 
 //Обработка метода createOrder
 if ($_POST['apiMethod'] === 'createOrder') {
