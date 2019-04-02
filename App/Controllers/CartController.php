@@ -43,6 +43,27 @@ class CartController extends Controller
 
     /**
      * @param array $data
+     * @throws Exception
+     */
+    public function add(array $data)
+    {
+        if (empty($data['id']) || empty($data['price']) || empty($data['discount'])) {
+            throw new Exception('Параметры не переданы');
+        }
+        $subtotal = $data['price'] * $data['discount'];
+        //пытаемся добавить товар в корзину
+        $param = ['user_id' => $this->id, 'product_id' => (int)$data['id'], 'subtotal' => $subtotal];
+        $product = Cart::showCartItem($param);
+        if ($product) {
+            throw new Exception("Вы уже добавили данный товар.");
+        } else {
+            Cart::add($param);
+            throw new Exception("Товар с ID:{$data['id']} добавлен в корзину.");
+        }
+    }
+
+    /**
+     * @param array $data
      * @return bool
      * @throws Exception
      */

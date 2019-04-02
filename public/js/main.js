@@ -42,45 +42,11 @@
 
     $('.item-product').on('click', '.item-add_link_top', e => {
         e.preventDefault();
-        console.log($(e.currentTarget).data('id'));
-        console.log($(e.currentTarget).data('image'));
-        console.log($(e.currentTarget).data('name'));
-        console.log($(e.currentTarget).data('price'));
-        console.log($(e.currentTarget).data('discount'));
-        console.log($(e.currentTarget).data('quantity'));
-        request('/api/products/add/', {
+        request('/api/cart/add/', {
             id: $(e.currentTarget).data('id'),
-            img: $(e.currentTarget).data('img'),
-            name: $(e.currentTarget).data('name'),
             price: $(e.currentTarget).data('price'),
             discount: $(e.currentTarget).data('discount'),
-            quantity: $(e.currentTarget).data('quantity'),
-        }, function (data) {
-            // location.reload();
-            $message_field.text(data['data']);
-        });
-
-        $.post({
-            url: '/api.php',
-            data: {
-                apiMethod: 'addToCart',
-                postData: {
-                    id: $(e.currentTarget).data('id'),
-                    img: $(e.currentTarget).data('img'),
-                    name: $(e.currentTarget).data('name'),
-                    price: $(e.currentTarget).data('price'),
-                    quantity: $(e.currentTarget).data('quantity'),
-                }
-            },
-            success: function (data) {
-                //data - приходят те данные, которые прислал сервер
-                if (data.data) {
-                    $message_field.text(data['data']);
-                }
-                if (data.error) {
-                    $message_field.text(data['error_text']);
-                }
-            }
+        }, function () {
         });
     });
 

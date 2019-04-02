@@ -2,35 +2,6 @@
 
 namespace App;
 
-//Обработка метода addToCart
-if ($_POST['apiMethod'] === 'addToCart') {
-
-    //у вас везде в апи есть обращение к $_SESSION['login'] но при этом нет проверки, что оно существует.
-
-    //Получаем данные из postData
-    $product_id = $_POST['postData']['product_id'] ?? '';
-
-    $user_id = $_SESSION['login']['id'];
-    $product = getProduct($product_id);
-    $price = $product['price'];
-    $discount = $product['discount'];
-    $subtotal = $price * $discount;
-
-//пытаемся добавить товар в корзину
-    $cartItem = showCartItem($product_id, $user_id);
-    (!isset($cartItem['quantity'])) ? addToCart($user_id, $product_id, $subtotal)
-        : error("Вы уже добавили данный товар.");
-    $cartItem = showCartItem($product_id, $user_id);
-    (isset($cartItem['quantity'])) ? success("Товар с ID($product_id) добавлен в корзину.")
-        : error('Что-то пошло не так');
-}
-//В вашем случае, если товар в корзину уже был добавлен, то сначала выведется "Вы уже добавляли данный товар в корзину.
-// Потом снова выполнится запрос show и выведится "Товар добавлен".
-//
-//Мы предполагаем, что addToCart Должен возвращать true либо false если товар добавлен, либо произошла ошибка.
-//Тогда нам не придется делать повторный запрос show.
-//А он в свою очередь проверяет true/false в зависимости что ему ответила БД на insert
-
 //Обработка метода createOrder
 if ($_POST['apiMethod'] === 'createOrder') {
 

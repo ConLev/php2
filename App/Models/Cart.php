@@ -87,6 +87,24 @@ class Cart extends Model
         ]);
     }
 
+    public static function add($param)
+    {
+        $user_id = $param['user_id'];
+        $product_id = $param['product_id'];
+        $subtotal = $param['subtotal'];
+        $sql = "INSERT INTO `cart` (`user_id`, `product_id`, `subtotal`) 
+VALUES ($user_id, $product_id, $subtotal)";
+        return DB::getInstance()->exec($sql);
+    }
+
+    public static function showCartItem($param)
+    {
+        $user_id = $param['user_id'];
+        $product_id = $param['product_id'];
+        $sql = "SELECT * FROM `cart` WHERE `product_id` = $product_id and `cart`.`user_id` = $user_id";
+        return DB::getInstance()->fetchOne($sql);
+    }
+
     public static function remove($param)
     {
         $sql = "DELETE FROM `cart` WHERE `cart`.`product_id` = :product_id and `cart`.`user_id` = :user_id";

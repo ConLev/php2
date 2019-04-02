@@ -5,30 +5,6 @@ namespace App;
 use App\Classes\DB;
 
 /**
- * Функция добавления товара в корзину
- * @param $user_id
- * @param $product_id
- * @param $subtotal
- * @return bool
- */
-function addToCart($user_id, $product_id, $subtotal)
-{
-    //избавляемся от инъекций
-    $user_id = (int)$user_id;
-    $product_id = (int)$product_id;
-    $subtotal = (float)$subtotal;
-
-    //Создаем подключение к БД
-    $db = createConnection();
-
-    //Генерируем SQL запрос на добавляение в БД
-    $sql = "INSERT INTO `cart` (`user_id`, `product_id`, `subtotal`) VALUES ($user_id, $product_id, $subtotal)";
-
-    //Выполняем запрос
-    return execQuery($sql, $db);
-}
-
-/**
  * Генерирует страницу заказов
  * @return string
  */
