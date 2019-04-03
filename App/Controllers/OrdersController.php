@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Models\Products;
+use App\Models\Orders;
 use Exception;
 
-class ProductsController extends Controller
+class OrdersController extends Controller
 {
     protected $template;
     protected $admin;
@@ -18,7 +18,7 @@ class ProductsController extends Controller
             $this->template = $rawProducts ? 'productsList.html' : 'productsPage.html';
             $page = (int)($_GET['page'] ?? 0);
             $startPage = $page * $perPage;
-            $products = Products::get([[
+            $products = Orders::get([[
                 'col' => 'isActive',
                 'oper' => '=',
                 'value' => 1,
@@ -58,14 +58,14 @@ class ProductsController extends Controller
             $h1 = 'Обновить товар';
 
             $this->template = $template = 'updateProduct.html';
-            $product = Products::getByKey($current_id);
+            $product = Orders::getByKey($current_id);
 
             if ($name && $description && $price && $discount && $image) {
                 //пытаемся обновить товар
                 $attributes = ['id' => (int)$current_id, 'name' => $name, 'description' => $description,
                     'price' => $price, 'discount' => $discount, 'image' => $image, 'isActive' => $isActive,
                     'categoryId' => $categoryId, 'current_id' => $current_id];
-                $product = new Products($attributes);
+                $product = new Orders($attributes);
                 $result = $product->save();
                 //при успешном обновлении возвращаемся на страницу просмотра товаров
                 if ($result) {
@@ -106,7 +106,7 @@ class ProductsController extends Controller
                 //пытаемся добавить товар
                 $attributes = ['name' => $name, 'description' => $description, 'price' => $price,
                     'discount' => $discount, 'image' => $image, 'isActive' => $isActive, 'categoryId' => $categoryId];
-                $product = new Products($attributes);
+                $product = new Orders($attributes);
                 $result = $product->save();
                 //при успешном добавлении товара возвращаемся на страницу просмотра товаров
                 if ($result) {
@@ -136,7 +136,7 @@ class ProductsController extends Controller
 
         try {
             $this->template = $template = 'showProduct.html';
-            $product = Products::getByKey($id);
+            $product = Orders::getByKey($id);
 
             return $this->render([
                 'title' => "product_$id",
@@ -156,7 +156,7 @@ class ProductsController extends Controller
 
         try {
             $param = ['id' => $id];
-            $result = Products::delete($param);
+            $result = Orders::delete($param);
 
             if ($result) {
                 header("Location: /products/", TRUE, 301);
