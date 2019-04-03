@@ -48,6 +48,8 @@ class ProductsController extends Controller
             $price = $_POST['price'] ?? '';
             $discount = $_POST['discount'] ?? '';
             $image = $_POST['image'] ?? '';
+            $isActive = $_POST['isActive'] ?? '';
+            $categoryId = $_POST['categoryId'] ?? '';
             $h1 = 'Обновить товар';
 
             $this->template = $template = 'updateProduct.html';
@@ -56,7 +58,8 @@ class ProductsController extends Controller
             if ($name && $description && $price && $discount && $image) {
                 //пытаемся обновить товар
                 $attributes = ['id' => (int)$current_id, 'name' => $name, 'description' => $description,
-                    'price' => $price, 'discount' => $discount, 'image' => $image, 'current_id' => $current_id];
+                    'price' => $price, 'discount' => $discount, 'image' => $image, 'isActive' => $isActive,
+                    'categoryId' => $categoryId, 'current_id' => $current_id];
                 $product = new Products($attributes);
                 $result = $product->save();
                 //при успешном обновлении возвращаемся на страницу просмотра товаров
@@ -85,7 +88,10 @@ class ProductsController extends Controller
         $name = $_POST['name'] ?? '';
         $description = $_POST['description'] ?? '';
         $price = $_POST['price'] ?? '';
+        $discount = $_POST['discount'] ?? '';
         $image = $_POST['image'] ?? '';
+        $isActive = $_POST['isActive'] ?? '';
+        $categoryId = $_POST['categoryId'] ?? '';
         $h1 = 'Добавить товар';
 
         try {
@@ -93,7 +99,8 @@ class ProductsController extends Controller
 
             if ($name && $description && $price && $image) {
                 //пытаемся добавить товар
-                $attributes = ['name' => $name, 'description' => $description, 'price' => $price, 'image' => $image];
+                $attributes = ['name' => $name, 'description' => $description, 'price' => $price,
+                    'discount' => $discount, 'image' => $image, 'isActive' => $isActive, 'categoryId' => $categoryId];
                 $product = new Products($attributes);
                 $result = $product->save();
                 //при успешном добавлении товара возвращаемся на страницу просмотра товаров

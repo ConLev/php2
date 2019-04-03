@@ -40,7 +40,7 @@
         });
     }
 
-    $('.item-product').on('click', '.item-add_link_top', e => {
+    $('.box-product').on('click', '.item-add_link_top', e => {
         e.preventDefault();
         request('/api/cart/add/', {
             id: $(e.currentTarget).data('id'),
