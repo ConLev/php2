@@ -46,16 +46,17 @@ class ProductsController extends Controller
             $name = $_POST['name'] ?? '';
             $description = $_POST['description'] ?? '';
             $price = $_POST['price'] ?? '';
+            $discount = $_POST['discount'] ?? '';
             $image = $_POST['image'] ?? '';
             $h1 = 'Обновить товар';
 
             $this->template = $template = 'updateProduct.html';
             $product = Products::getByKey($current_id);
 
-            if ($name && $description && $price && $image) {
+            if ($name && $description && $price && $discount && $image) {
                 //пытаемся обновить товар
                 $attributes = ['id' => (int)$current_id, 'name' => $name, 'description' => $description,
-                    'price' => $price, 'image' => $image, 'current_id' => $current_id];
+                    'price' => $price, 'discount' => $discount, 'image' => $image, 'current_id' => $current_id];
                 $product = new Products($attributes);
                 $result = $product->save();
                 //при успешном обновлении возвращаемся на страницу просмотра товаров
