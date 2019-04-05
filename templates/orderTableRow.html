@@ -1,0 +1,8 @@
+{% for order in orders %}
+<tr data-id="{{order.product.id}}">
+    <td class="order_td">{{order.product.name}}</td>
+    <td class="order_td">$ {{order.product.price}}</td>
+    <td class="order_td">{{order.product.count}}</td>
+    <td class="order_td">$ {{order.product.sum}}</td>
+</tr>
+{% endfor %}

@@ -1,0 +1,52 @@
+{% for order in orders %}
+<h3>Заказ #{{order.order_id}} создан {{order.dateCreate}}</h3>
+<table class="order_table">
+    <thead>
+    <tr>
+        <td class="order_thead">Название</td>
+        <td class="order_thead">Стоимость</td>
+        <td class="order_thead">Скидка</td>
+        <td class="order_thead">Количество</td>
+        <td class="order_thead">Сумма</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-id="{{order.product.id}}">
+        <td class="order_td">{{order.product.name}}</td>
+        <td class="order_td">$ {{order.product.price}}</td>
+        <td class="order_td">{{100 - order.product.discount * 100}} %</td>
+        <td class="order_td">{{order.amount}}</td>
+        <td class="order_td">$ {{order.product.price * order.product.discount * order.amount}}</td>
+    </tr>
+    <!--    <tr>-->
+    <!--        <td class="order_thead" colspan="4">Итого</td>-->
+    <!--        <td class="order_thead">$ {{sum}}</td>-->
+    <!--    </tr>-->
+    <tr>
+        {% if order.status == 1 %}
+        <td class="order_thead">Статус заказа: Заказ активен</td>
+        {% endif %}
+        {% if order.status == 2 %}
+        <td class="order_thead">Статус заказа: Заказ неактивен</td>
+        {% endif %}
+        {% if order.status == 3 %}
+        <td class="order_thead">Статус заказа: Заказ удален</td>
+        {% endif %}
+        {% if order.status == 4 %}
+        <td class="order_thead">Статус заказа: Заказ подтвержден</td>
+        {% endif %}
+        {% if admin %}
+        <td class="order_thead" colspan="4"><label class='user_order_status_label'><input
+                class='user_order_status_input' type='number' min='1' max='4' value='{{order.status}}'
+                data-order_id='{{order.order_id}}' name='status'/></label>
+            <button class='remove_order' data-order_id='{{order.order_id}}'>Удалить</button>
+        </td>
+        {% else %}
+        <td class="order_thead" colspan="4">
+            <button class='user_order_cancel' data-order_id='$order_id'>Отменить</button>
+        </td>
+        {% endif %}
+    </tr>
+    </tbody>
+</table>
+{% endfor %}

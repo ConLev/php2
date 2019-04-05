@@ -1,5 +1,4 @@
 {% extends 'index.html' %}
-
 {% block container %}
 <h1>{{h1}}</h1>
 <div class="user_account_box">
@@ -14,6 +13,9 @@
     {% for page in pages %}
     <p class="user_account_text">{{page}}</p>
     {% endfor %}
+</div>
+<div style="padding-top: 20px">
+    {% include 'orderTable.html' %}
 </div>
 {% endblock %}
 {% endblock %}

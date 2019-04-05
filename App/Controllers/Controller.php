@@ -12,6 +12,7 @@ abstract class Controller
     protected $app;
     protected $userName;
     protected $userLogin;
+    protected $id;
     protected $admin;
 
     public function __construct()
