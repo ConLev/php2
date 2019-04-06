@@ -52,13 +52,13 @@ class OrdersController extends Controller
     }
 
     /**
-     * @param $order_id
+     * @param array $data
      * @return bool
      * @throws Exception
      */
-    public function removeOrder($order_id)
+    public function removeOrder(array $data)
     {
-        $param = ['order_id' => (int)$order_id];
+        $param = ['order_id' => (int)$data['order_id']];
         $result = OrdersProducts::removeOrder($param);
 
         if ($result) {

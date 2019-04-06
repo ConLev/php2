@@ -114,6 +114,14 @@
         });
     });
 
+    $('.remove_order').on('click', e => {
+        request('/api/orders/removeOrder/', {
+            order_id: $(e.currentTarget).data('order_id'),
+        }, function () {
+            location.reload();
+        });
+    });
+
     //Инициализируем поле для сообщений
     const $message_field = $('.message');
 
