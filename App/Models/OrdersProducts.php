@@ -7,6 +7,7 @@ use App\Classes\DB;
 class OrdersProducts extends Model
 {
     protected static $table = 'orders_products';
+    protected static $primaryKey = 'id';
 
     protected static $schema = [
         [

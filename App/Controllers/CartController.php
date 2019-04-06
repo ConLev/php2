@@ -71,15 +71,14 @@ class CartController extends Controller
     {
         if (empty($data['id']) || empty($data['price']) || empty($data['quantity']) || empty($data['discount'])) {
             throw new Exception('Параметры не переданы');
-        } else {
-            $subtotal = $data['price'] * $data['quantity'] * $data['discount'];
-            //пытаемся обновить корзину
-            $attributes = ['product_id' => (int)$data['id'], 'price' => (float)$data['price'],
-                'discount' => (float)$data['discount'], 'quantity' => (int)$data['quantity'],
-                'subtotal' => $subtotal, 'user_id' => $this->id];
-            $cart = new Cart($attributes);
-            $result = $cart->save();
         }
+        $subtotal = $data['price'] * $data['quantity'] * $data['discount'];
+        //пытаемся обновить корзину
+        $attributes = ['product_id' => (int)$data['id'], 'price' => (float)$data['price'],
+            'discount' => (float)$data['discount'], 'quantity' => (int)$data['quantity'],
+            'subtotal' => $subtotal, 'user_id' => $this->id];
+        $cart = new Cart($attributes);
+        $result = $cart->save();
 
         if ($result) {
             return true;

@@ -37,13 +37,16 @@
         {% endif %}
         {% if admin %}
         <td class="order_thead" colspan="4"><label class='user_order_status_label'><input
-                class='user_order_status_input' type='number' min='1' max='4' value='{{order.status}}'
-                data-order_id='{{order.order_id}}' name='status'/></label>
+                class='order_status_value' type='number' min='1' max='4' data-id='{{order.id}}' value='{{order.status}}'
+                data-order_id='{{order.order_id}}' data-product_id='{{order.product.id}}'
+                data-amount='{{order.amount}}'/></label>
             <button class='remove_order' data-order_id='{{order.order_id}}'>Удалить</button>
         </td>
         {% else %}
         <td class="order_thead" colspan="4">
-            <button class='user_order_cancel' data-order_id='$order_id'>Отменить</button>
+            <button class='user_order_cancel' data-id='{{order.id}}' data-order_id='{{order.order_id}}'
+                    data-product_id='{{order.product.id}}' data-amount='{{order.amount}}' data-status='2'>Отменить
+            </button>
         </td>
         {% endif %}
     </tr>

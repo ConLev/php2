@@ -689,7 +689,7 @@ h3 {
     color: #9f9f9f;
 }
 
-.user_order_status_input {
+.order_status_value {
     width: 100px;
     margin-right: 10px;
     border: 1px solid darkgray;
