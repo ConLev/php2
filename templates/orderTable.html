@@ -8,15 +8,21 @@
         <td class="order_thead">Скидка</td>
         <td class="order_thead">Количество</td>
         <td class="order_thead">Сумма</td>
+        <td class="order_thead"></td>
     </tr>
     </thead>
     <tbody>
-    <tr data-id="{{order.product.id}}">
+    <tr>
         <td class="order_td">{{order.product.name}}</td>
         <td class="order_td">$ {{order.product.price}}</td>
         <td class="order_td">{{100 - order.product.discount * 100}} %</td>
         <td class="order_td">{{order.amount}}</td>
         <td class="order_td">$ {{order.product.price * order.product.discount * order.amount}}</td>
+        <td class="order_td">
+            <button class='remove_product_of_order' data-order_id='{{order.order_id}}'
+                    data-product_id='{{order.product_id}}'>Удалить
+            </button>
+        </td>
     </tr>
     <!--    <tr>-->
     <!--        <td class="order_thead" colspan="4">Итого</td>-->
@@ -36,14 +42,14 @@
         <td class="order_thead">Статус заказа: Заказ подтвержден</td>
         {% endif %}
         {% if admin %}
-        <td class="order_thead" colspan="4"><label class='user_order_status_label'><input
+        <td class="order_thead" colspan="5"><label class='user_order_status_label'><input
                 class='order_status_value' type='number' min='1' max='4' data-id='{{order.id}}' value='{{order.status}}'
                 data-order_id='{{order.order_id}}' data-product_id='{{order.product.id}}'
                 data-amount='{{order.amount}}'/></label>
             <button class='remove_order' data-order_id='{{order.order_id}}'>Удалить</button>
         </td>
         {% else %}
-        <td class="order_thead" colspan="4">
+        <td class="order_thead" colspan="5">
             <button class='user_order_cancel' data-id='{{order.id}}' data-order_id='{{order.order_id}}'
                     data-product_id='{{order.product.id}}' data-amount='{{order.amount}}' data-status='2'>Отменить
             </button>

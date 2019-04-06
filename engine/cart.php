@@ -85,27 +85,6 @@ data-order_id='$order_id'>Удалить</button>"
 }
 
 /**
- * Функция обновления статуса заказа
- * @param $order_id
- * @param $status
- * @return bool|mysqli_result
- */
-function updateStatus($order_id, $status)
-{
-    //для безопасности приводим к числу
-    $order_id = (int)$order_id;
-    $status = (int)$status;
-
-    //Создаем подключение к БД
-    $db = createConnection();
-
-    $sql = "UPDATE `orders` SET `status` = $status WHERE `orders`.`id` = $order_id";
-
-    //Выполняем запрос
-    return execQuery($sql, $db);
-}
-
-/**
  * Функция удаления заказа
  * @param $order_id
  * @return bool|mysqli_result

@@ -100,9 +100,17 @@ class OrdersProducts extends Model
         return $orders;
     }
 
-    public static function delete($param)
+    public static function deleteProductOfOrder($param)
     {
-        $sql = "DELETE FROM `orders_products` WHERE `orders_products`.`order_id` = :id";
+        $sql = "DELETE FROM `orders_products` WHERE `orders_products`.`order_id` = :order_id 
+                                and `orders_products`.`product_id`= :product_id";
+        return DB::getInstance()->exec($sql, $param);
+    }
+
+    public static function removeOrder($param)
+    {
+        $sql = "DELETE `orders`, `orders_products` FROM `orders` INNER JOIN `orders_products`
+WHERE `orders`.id= :order_id and `orders_products`.`order_id`= :order_id;";
         return DB::getInstance()->exec($sql, $param);
     }
 }

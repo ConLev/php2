@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\Orders;
 use App\Models\OrdersProducts;
 use Exception;
 
@@ -35,20 +34,37 @@ class OrdersController extends Controller
         }
     }
 
-    public function delete()
+    /**
+     * @param array $data
+     * @return bool
+     * @throws Exception
+     */
+    public function deleteProductOfOrder(array $data)
     {
-        $id = (int)$_GET['id'] ?? '';
+        $param = ['order_id' => (int)$data['order_id'], 'product_id' => (int)$data['product_id']];
+        $result = OrdersProducts::deleteProductOfOrder($param);
 
-        try {
-            $param = ['id' => $id];
-            $result = OrdersProducts::delete($param);
+        if ($result) {
+            return true;
+        } else {
+            throw new Exception('Ошибка при удалении товара из заказа');
+        }
+    }
 
-            if ($result) {
-                header("Location: /account/", TRUE, 301);
-            }
+    /**
+     * @param $order_id
+     * @return bool
+     * @throws Exception
+     */
+    public function removeOrder($order_id)
+    {
+        $param = ['order_id' => (int)$order_id];
+        $result = OrdersProducts::removeOrder($param);
 
-        } catch (Exception $e) {
-            die ('ERROR: ' . $e->getMessage());
+        if ($result) {
+            return true;
+        } else {
+            throw new Exception('Ошибка при удалении заказа');
         }
     }
 }

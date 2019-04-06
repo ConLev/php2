@@ -105,6 +105,15 @@
         });
     });
 
+    $('.remove_product_of_order').on('click', e => {
+        request('/api/orders/deleteProductOfOrder/', {
+            order_id: $(e.currentTarget).data('order_id'),
+            product_id: $(e.currentTarget).data('product_id'),
+        }, function () {
+            location.reload();
+        });
+    });
+
     //Инициализируем поле для сообщений
     const $message_field = $('.message');
 
