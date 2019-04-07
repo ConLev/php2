@@ -35,4 +35,9 @@ class DB
     {
         return $this->fetchAll($sql)[0] ?? null;
     }
+
+    public function lastInsertId()
+    {
+        return $this->pdo->lastInsertId();
+    }
 }

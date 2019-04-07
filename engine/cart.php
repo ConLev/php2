@@ -83,23 +83,3 @@ data-order_id='$order_id'>Удалить</button>"
     }
     return $result;
 }
-
-/**
- * Функция удаления заказа
- * @param $order_id
- * @return bool|mysqli_result
- */
-function removeOrder($order_id)
-{
-    //для безопасности приводим к числу
-    $order_id = (int)$order_id;
-
-    //Создаем подключение к БД
-    $db = createConnection();
-
-    $sql = "DELETE `orders`, `orders_products` FROM `orders` INNER JOIN `orders_products`
-WHERE `orders`.id= $order_id and `orders_products`.`order_id`= $order_id;";
-
-    //Выполняем запрос
-    return execQuery($sql, $db);
-}

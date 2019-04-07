@@ -286,8 +286,9 @@ abstract class Model
                 $values[] = is_null($this->attributes[$field['name']]) ? 'NULL' : "'{$value}'";
             }
             $sql .= '(' . implode(', ', $cols) . ') VALUES (' . implode(', ', $values) . ')';
+            DB::getInstance()->exec($sql);
+            $this->attributes[$primary] = DB::getInstance()->lastInsertId();
         }
-        DB::getInstance()->exec($sql);
         return $this;
     }
 

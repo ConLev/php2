@@ -79,6 +79,12 @@
         });
     });
 
+    $('.shopping-cart-button_createOrder').on('click', e => {
+        request('/api/orders/createOrder/', {}, function () {
+            location.reload();
+        });
+    });
+
     const $orderStatus = $('.order_thead');
 
     $orderStatus.on('click', '.order_status_value', e => {
