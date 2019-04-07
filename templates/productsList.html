@@ -8,10 +8,12 @@
             <span class="product-comment">☆☆☆☆☆</span>
         </div>
     </a>
+    {% if session %}
     <div class="item-add_top">
         <a href="#" class="item-add_link_top" data-id="{{product.id}}" data-price="{{product.price}}"
            data-discount={{product.discount}}>Add to Cart</a>
     </div>
+    {% endif %}
     {% if admin %}
     <div class="item-add_bottom">
         <a href="/products/create/" class="item-add_link_bottom">Create</a>

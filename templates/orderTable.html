@@ -8,7 +8,9 @@
         <td class="order_thead">Скидка</td>
         <td class="order_thead">Количество</td>
         <td class="order_thead">Сумма</td>
+        {% if admin %}
         <td class="order_thead"></td>
+        {% endif %}
     </tr>
     </thead>
     <tbody>
@@ -18,11 +20,13 @@
         <td class="order_td">{{100 - order.product.discount * 100}} %</td>
         <td class="order_td">{{order.amount}}</td>
         <td class="order_td">$ {{order.product.price * order.product.discount * order.amount}}</td>
+        {% if admin %}
         <td class="order_td">
             <button class='remove_product_of_order' data-order_id='{{order.order_id}}'
                     data-product_id='{{order.product_id}}'>Удалить
             </button>
         </td>
+        {% endif %}
     </tr>
     <!--    <tr>-->
     <!--        <td class="order_thead" colspan="4">Итого</td>-->
