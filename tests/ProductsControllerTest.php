@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require_once 'BaseTest.php';
 
-class CartControllerTest extends BaseTest
+class ProductsControllerTest extends BaseTest
 {
     protected $fixture;
 
@@ -17,72 +17,40 @@ class CartControllerTest extends BaseTest
     }
 
     /**
-     * @dataProvider providerAdd
-     * @param $data
      * @throws Exception
      */
-    public function testAdd($data)
+    public function testUpdate()
     {
-        $this->assertTrue($this->fixture->add($data));
-    }
-
-    public function providerAdd()
-    {
-        return [
-            ['id' => 1],
-            ['price' => 52],
-            ['discount' => 0.5],
-        ];
-    }
-
-    /**
-     * @dataProvider providerUpdate
-     * @param $data
-     * @throws Exception
-     */
-    public function testUpdate($data)
-    {
-        $this->assertTrue($this->fixture->update($data));
-    }
-
-    public function providerUpdate()
-    {
-        return [
-            ['id' => 1],
-            ['price' => 52],
-            ['quantity' => 3],
-            ['discount' => 0.5],
-        ];
-    }
-
-    /**
-     * @dataProvider providerRemove
-     * @param $data
-     * @throws Exception
-     */
-    public function testRemove($data)
-    {
-        $this->assertTrue($this->fixture->remove($data));
-    }
-
-    public function providerRemove()
-    {
-        return [
-            ['product_id' => 1],
-        ];
+        $this->assertTrue($this->fixture->update());
     }
 
     /**
      * @throws Exception
      */
-    public function testClear()
+    public function testCreate()
     {
-        $this->assertTrue($this->fixture->clear());
+        $this->assertTrue($this->fixture->create());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testView()
+    {
+        $this->assertTrue($this->fixture->view());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testDelete()
+    {
+        $this->assertTrue($this->fixture->delete());
     }
 
     protected function setUp(): void
     {
-        $this->fixture = new App\Controllers\CartController();
+        $this->fixture = new App\Controllers\ProductsController();
     }
 
     protected function tearDown(): void

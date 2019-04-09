@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require_once 'BaseTest.php';
 
-class AuthenticationControllerTest extends BaseTest
+class IndexControllerTest extends BaseTest
 {
     protected $fixture;
 
@@ -17,34 +17,27 @@ class AuthenticationControllerTest extends BaseTest
     }
 
     /**
-     * @dataProvider providerLogin
+     * @dataProvider providerError
      * @param $data
      * @throws Exception
      */
-    public function testLogin($data)
+    public function testError($data)
     {
-        $this->assertTrue($this->fixture->login($data));
+        $this->assertTrue($this->fixture->error($data));
     }
 
-    public function providerLogin()
+    public function providerError()
     {
         return [
-            ['login' => 'admin'],
-            ['password' => 'password'],
+            ['data' => null],
+            ['error' => true],
+            ['error_text' => 'Ошибка'],
         ];
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testLogout()
-    {
-        $this->assertTrue($this->fixture->logout());
     }
 
     protected function setUp(): void
     {
-        $this->fixture = new App\Controllers\AuthenticationController();
+        $this->fixture = new App\Controllers\IndexController();
     }
 
     protected function tearDown(): void

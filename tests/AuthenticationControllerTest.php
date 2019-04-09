@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require_once 'BaseTest.php';
 
-class CartControllerTest extends BaseTest
+class AuthenticationControllerTest extends BaseTest
 {
     protected $fixture;
 
@@ -17,72 +17,34 @@ class CartControllerTest extends BaseTest
     }
 
     /**
-     * @dataProvider providerAdd
+     * @dataProvider providerLogin
      * @param $data
      * @throws Exception
      */
-    public function testAdd($data)
+    public function testLogin($data)
     {
-        $this->assertTrue($this->fixture->add($data));
+        $this->assertTrue($this->fixture->login($data));
     }
 
-    public function providerAdd()
+    public function providerLogin()
     {
         return [
-            ['id' => 1],
-            ['price' => 52],
-            ['discount' => 0.5],
-        ];
-    }
-
-    /**
-     * @dataProvider providerUpdate
-     * @param $data
-     * @throws Exception
-     */
-    public function testUpdate($data)
-    {
-        $this->assertTrue($this->fixture->update($data));
-    }
-
-    public function providerUpdate()
-    {
-        return [
-            ['id' => 1],
-            ['price' => 52],
-            ['quantity' => 3],
-            ['discount' => 0.5],
-        ];
-    }
-
-    /**
-     * @dataProvider providerRemove
-     * @param $data
-     * @throws Exception
-     */
-    public function testRemove($data)
-    {
-        $this->assertTrue($this->fixture->remove($data));
-    }
-
-    public function providerRemove()
-    {
-        return [
-            ['product_id' => 1],
+            ['login' => 'admin'],
+            ['password' => 'password'],
         ];
     }
 
     /**
      * @throws Exception
      */
-    public function testClear()
+    public function testLogout()
     {
-        $this->assertTrue($this->fixture->clear());
+        $this->assertTrue($this->fixture->logout());
     }
 
     protected function setUp(): void
     {
-        $this->fixture = new App\Controllers\CartController();
+        $this->fixture = new App\Controllers\AuthenticationController();
     }
 
     protected function tearDown(): void

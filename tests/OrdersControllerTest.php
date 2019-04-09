@@ -4,85 +4,77 @@ declare(strict_types=1);
 
 require_once 'BaseTest.php';
 
-class CartControllerTest extends BaseTest
+class OrdersControllerTest extends BaseTest
 {
     protected $fixture;
 
     /**
      * @throws Exception
      */
-    public function testIndex()
+    public function testCreateOrder()
     {
-        $this->assertTrue($this->fixture->index());
+        $this->assertTrue($this->fixture->createOrder());
     }
 
     /**
-     * @dataProvider providerAdd
+     * @dataProvider providerUpdateStatus
      * @param $data
      * @throws Exception
      */
-    public function testAdd($data)
+    public function testUpdateStatus($data)
     {
-        $this->assertTrue($this->fixture->add($data));
+        $this->assertTrue($this->fixture->updateStatus($data));
     }
 
-    public function providerAdd()
+    public function providerUpdateStatus()
     {
         return [
             ['id' => 1],
-            ['price' => 52],
-            ['discount' => 0.5],
+            ['order_id' => 1],
+            ['product_id' => 4],
+            ['amount' => 3],
+            ['status' => 1],
         ];
     }
 
     /**
-     * @dataProvider providerUpdate
+     * @dataProvider providerDeleteProductOfOrder
      * @param $data
      * @throws Exception
      */
-    public function testUpdate($data)
+    public function testDeleteProductOfOrder($data)
     {
-        $this->assertTrue($this->fixture->update($data));
+        $this->assertTrue($this->fixture->deleteProductOfOrder($data));
     }
 
-    public function providerUpdate()
+    public function providerDeleteProductOfOrder()
     {
         return [
-            ['id' => 1],
-            ['price' => 52],
-            ['quantity' => 3],
-            ['discount' => 0.5],
+            ['order_id' => 1],
+            ['product_id' => 4],
         ];
     }
 
     /**
-     * @dataProvider providerRemove
+     * @dataProvider providerRemoveOrder
      * @param $data
      * @throws Exception
      */
-    public function testRemove($data)
+    public function testRemoveOrder($data)
     {
-        $this->assertTrue($this->fixture->remove($data));
+        $this->assertTrue($this->fixture->removeOrder($data));
     }
 
-    public function providerRemove()
+    public function providerRemoveOrder()
     {
         return [
-            ['product_id' => 1],
+            ['order_id' => 1],
         ];
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testClear()
-    {
-        $this->assertTrue($this->fixture->clear());
     }
 
     protected function setUp(): void
     {
-        $this->fixture = new App\Controllers\CartController();
+        $this->fixture = new App\Controllers\OrdersController();
     }
 
     protected function tearDown(): void
