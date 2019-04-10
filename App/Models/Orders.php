@@ -6,7 +6,7 @@ use App\Classes\DB;
 
 class Orders extends Model
 {
-    protected static $table = 'products';
+    protected static $table = 'orders';
 
     protected static $schema = [
         [
@@ -14,23 +14,11 @@ class Orders extends Model
             'type' => 'int'
         ],
         [
-            'name' => 'name',
-            'type' => 'string'
+            'name' => 'user_id',
+            'type' => 'int'
         ],
         [
-            'name' => 'description',
-            'type' => 'string'
-        ],
-        [
-            'name' => 'price',
-            'type' => 'float'
-        ],
-        [
-            'name' => 'discount',
-            'type' => 'float'
-        ],
-        [
-            'name' => 'image',
+            'name' => 'address',
             'type' => 'string'
         ],
         [
@@ -44,18 +32,40 @@ class Orders extends Model
             'nullable' => true,
         ],
         [
-            'name' => 'isActive',
-            'type' => 'bool'
-        ],
-        [
-            'name' => 'categoryId',
+            'name' => 'status',
             'type' => 'int'
-        ]
+        ],
     ];
+
+    public static function getOrders(
+        ?array $filters = [],
+        ?array $orders = [],
+        ?int $limitCount = null,
+        ?int $limitOffset = null
+    ): array
+    {
+        $usersOrders = static::get($filters, $orders, $limitCount, $limitOffset);
+
+        if (empty($usersOrders)) {
+            return $usersOrders;
+        }
+        return $usersOrders;
+    }
+
+    public static function getUserOrders($id)
+    {
+        return Orders::getOrders([
+            [
+                'col' => 'user_id',
+                'oper' => '=',
+                'value' => $id,
+            ],
+        ]);
+    }
 
     public static function delete($param)
     {
-        $sql = "DELETE FROM `products` WHERE `products`.`id` = :id";
+        $sql = "DELETE FROM `orders` WHERE `orders`.`id` = :id";
         return DB::getInstance()->exec($sql, $param);
     }
 }

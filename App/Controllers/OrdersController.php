@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\Orders;
+use App\Models\OrdersProducts;
 use Exception;
 
 class OrdersController extends Controller
@@ -10,160 +10,61 @@ class OrdersController extends Controller
     protected $template;
     protected $admin;
 
-    public function index()
+    /**
+     * @param array $data
+     * @return bool
+     * @throws Exception
+     */
+    public function updateStatus(array $data)
     {
-        try {
-            $perPage = 4;
-            $rawProducts = !empty($_GET['rawProducts']);
-            $this->template = $rawProducts ? 'productsList.html' : 'productsPage.html';
-            $page = (int)($_GET['page'] ?? 0);
-            $startPage = $page * $perPage;
-            $products = Orders::get([[
-                'col' => 'isActive',
-                'oper' => '=',
-                'value' => 1,
-            ]],
-                [], $perPage, $startPage);
+        if (empty($data['id']) || empty($data['order_id']) || empty($data['product_id']) || empty($data['amount'])
+            || empty($data['status'])) {
+            throw new Exception('Параметры не переданы');
+        }
+        //пытаемся обновить статус заказа
+        $attributes = ['id' => (int)$data['id'], 'order_id' => (int)$data['order_id'],
+            'product_id' => (int)$data['product_id'], 'amount' => (int)$data['amount'], 'status' => (int)$data['status']];
+        $orderStatus = new OrdersProducts($attributes);
+        $result = $orderStatus->save();
 
-            return $this->render([
-                'title' => 'products',
-                'products' => $products,
-                'page' => $page,
-                'admin' => $this->admin,
-                'year' => date("Y"),
-            ]);
-
-        } catch (Exception $e) {
-            die ('ERROR: ' . $e->getMessage());
+        if ($result) {
+            return true;
+        } else {
+            throw new Exception('Ошибка при обновлении статуса заказа');
         }
     }
 
-    public function update()
+    /**
+     * @param array $data
+     * @return bool
+     * @throws Exception
+     */
+    public function deleteProductOfOrder(array $data)
     {
-        try {
-            $current_id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+        $param = ['order_id' => (int)$data['order_id'], 'product_id' => (int)$data['product_id']];
+        $result = OrdersProducts::deleteProductOfOrder($param);
 
-            if (!$current_id) {
-                echo 'id не передан';
-                exit();
-            }
-
-            $name = $_POST['name'] ?? '';
-            $description = $_POST['description'] ?? '';
-            $price = $_POST['price'] ?? '';
-            $discount = $_POST['discount'] ?? '';
-            $image = $_POST['image'] ?? '';
-            $isActive = $_POST['isActive'] ?? '';
-            $categoryId = $_POST['categoryId'] ?? '';
-            $h1 = 'Обновить товар';
-
-            $this->template = $template = 'updateProduct.html';
-            $product = Orders::getByKey($current_id);
-
-            if ($name && $description && $price && $discount && $image) {
-                //пытаемся обновить товар
-                $attributes = ['id' => (int)$current_id, 'name' => $name, 'description' => $description,
-                    'price' => $price, 'discount' => $discount, 'image' => $image, 'isActive' => $isActive,
-                    'categoryId' => $categoryId, 'current_id' => $current_id];
-                $product = new Orders($attributes);
-                $result = $product->save();
-                //при успешном обновлении возвращаемся на страницу просмотра товаров
-                if ($result) {
-                    header("Location: /products/", TRUE, 301);
-
-                    //очишаем кеш (id)
-                    header("Cache-Control: no-cache");
-                }
-            }
-
-            return $this->render([
-                'title' => 'update_product',
-                'h1' => "$h1",
-                'product' => $product,
-                'year' => date("Y"),
-            ]);
-
-        } catch (Exception $e) {
-            die ('ERROR: ' . $e->getMessage());
+        if ($result) {
+            return true;
+        } else {
+            throw new Exception('Ошибка при удалении товара из заказа');
         }
     }
 
-    public function create()
+    /**
+     * @param array $data
+     * @return bool
+     * @throws Exception
+     */
+    public function removeOrder(array $data)
     {
-        $name = $_POST['name'] ?? '';
-        $description = $_POST['description'] ?? '';
-        $price = $_POST['price'] ?? '';
-        $discount = $_POST['discount'] ?? '';
-        $image = $_POST['image'] ?? '';
-        $isActive = $_POST['isActive'] ?? '';
-        $categoryId = $_POST['categoryId'] ?? '';
-        $h1 = 'Добавить товар';
+        $param = ['order_id' => (int)$data['order_id']];
+        $result = OrdersProducts::removeOrder($param);
 
-        try {
-            $this->template = $template = 'createProduct.html';
-
-            if ($name && $description && $price && $image) {
-                //пытаемся добавить товар
-                $attributes = ['name' => $name, 'description' => $description, 'price' => $price,
-                    'discount' => $discount, 'image' => $image, 'isActive' => $isActive, 'categoryId' => $categoryId];
-                $product = new Orders($attributes);
-                $result = $product->save();
-                //при успешном добавлении товара возвращаемся на страницу просмотра товаров
-                if ($result) {
-                    header("Location: /products/", TRUE, 301);
-                }
-            }
-
-            return $this->render([
-                'title' => 'create_product',
-                'h1' => "$h1",
-                'year' => date("Y"),
-            ]);
-
-        } catch (Exception $e) {
-            die ('ERROR: ' . $e->getMessage());
-        }
-    }
-
-    public function view()
-    {
-        $id = isset($_GET['id']) ? (int)$_GET['id'] : false;
-
-        if (!$id) {
-            echo 'id не передан';
-            exit();
-        }
-
-        try {
-            $this->template = $template = 'showProduct.html';
-            $product = Orders::getByKey($id);
-
-            return $this->render([
-                'title' => "product_$id",
-                'h1' => "Товар $id",
-                'product' => $product,
-                'year' => date("Y"),
-            ]);
-
-        } catch (Exception $e) {
-            die ('ERROR: ' . $e->getMessage());
-        }
-    }
-
-    public function delete()
-    {
-        $id = (int)$_GET['id'] ?? '';
-
-        try {
-            $param = ['id' => $id];
-            $result = Orders::delete($param);
-
-            if ($result) {
-                header("Location: /products/", TRUE, 301);
-            }
-
-        } catch (Exception $e) {
-            die ('ERROR: ' . $e->getMessage());
+        if ($result) {
+            return true;
+        } else {
+            throw new Exception('Ошибка при удалении заказа');
         }
     }
 }

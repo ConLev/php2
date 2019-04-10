@@ -79,6 +79,49 @@
         });
     });
 
+    const $orderStatus = $('.order_thead');
+
+    $orderStatus.on('click', '.order_status_value', e => {
+        request('/api/orders/updateStatus/', {
+            id: $(e.currentTarget).data('id'),
+            order_id: $(e.currentTarget).data('order_id'),
+            product_id: $(e.currentTarget).data('product_id'),
+            amount: $(e.currentTarget).data('amount'),
+            status: (e.currentTarget).value,
+        }, function () {
+            location.reload();
+        });
+    });
+
+    $orderStatus.on('click', '.user_order_cancel', e => {
+        request('/api/orders/updateStatus/', {
+            id: $(e.currentTarget).data('id'),
+            order_id: $(e.currentTarget).data('order_id'),
+            product_id: $(e.currentTarget).data('product_id'),
+            amount: $(e.currentTarget).data('amount'),
+            status: $(e.currentTarget).data('status'),
+        }, function () {
+            location.reload();
+        });
+    });
+
+    $('.remove_product_of_order').on('click', e => {
+        request('/api/orders/deleteProductOfOrder/', {
+            order_id: $(e.currentTarget).data('order_id'),
+            product_id: $(e.currentTarget).data('product_id'),
+        }, function () {
+            location.reload();
+        });
+    });
+
+    $('.remove_order').on('click', e => {
+        request('/api/orders/removeOrder/', {
+            order_id: $(e.currentTarget).data('order_id'),
+        }, function () {
+            location.reload();
+        });
+    });
+
     //Инициализируем поле для сообщений
     const $message_field = $('.message');
 

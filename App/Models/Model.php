@@ -258,7 +258,7 @@ abstract class Model
 
             foreach (static::$schema as $field) {
                 //Не даем изменить primaryKey и secondaryKey
-                if ($field['name'] === $primary && $field['name'] === $secondary) {
+                if ($field['name'] === $primary || $field['name'] === $secondary) {
                     continue;
                 }
                 $value = (string)$this->attributes[$field['name']];
