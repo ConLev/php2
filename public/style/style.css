@@ -26,7 +26,7 @@ body {
 
 .nav {
     position: fixed;
-    z-index: -1;
+    z-index: 2;
     left: 0;
     top: 0;
     width: 100%;
@@ -506,7 +506,7 @@ h3 {
     justify-content: space-between;
 }
 
-.shopping-cart-button_clear, .shopping-cart-button_button_createOrder {
+.shopping-cart-button_clear, .shopping-cart-button_createOrder {
     border: 1px solid #eaeaea;
     background-color: #ffffff;
     box-sizing: border-box;
@@ -518,7 +518,7 @@ h3 {
     padding: 16px 33px;
 }
 
-.shopping-cart-button_clear:hover, .shopping-cart-button_button_createOrder:hover {
+.shopping-cart-button_clear:hover, .shopping-cart-button_createOrder:hover {
     color: #ffffff;
     background-color: #f16d7f;
 }

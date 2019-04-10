@@ -288,6 +288,7 @@ abstract class Model
             $sql .= '(' . implode(', ', $cols) . ') VALUES (' . implode(', ', $values) . ')';
         }
         DB::getInstance()->exec($sql);
+        $this->attributes[$primary] = DB::getInstance()->lastInsertId();
         return $this;
     }
 

@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Classes\DB;
-
 class Orders extends Model
 {
     protected static $table = 'orders';
@@ -61,11 +59,5 @@ class Orders extends Model
                 'value' => $id,
             ],
         ]);
-    }
-
-    public static function delete($param)
-    {
-        $sql = "DELETE FROM `orders` WHERE `orders`.`id` = :id";
-        return DB::getInstance()->exec($sql, $param);
     }
 }
