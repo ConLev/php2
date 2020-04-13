@@ -90,9 +90,9 @@
     $orderStatus.on('click', '.order_status_value', e => {
         request('/api/orders/updateStatus/', {
             id: $(e.currentTarget).data('id'),
-            order_id: $(e.currentTarget).data('order_id'),
-            product_id: $(e.currentTarget).data('product_id'),
-            amount: $(e.currentTarget).data('amount'),
+            user_id: $(e.currentTarget).data('user_id'),
+            address: $(e.currentTarget).data('address'),
+            date_create: $(e.currentTarget).data('date_create'),
             status: (e.currentTarget).value,
         }, function () {
             location.reload();
@@ -102,9 +102,9 @@
     $orderStatus.on('click', '.user_order_cancel', e => {
         request('/api/orders/updateStatus/', {
             id: $(e.currentTarget).data('id'),
-            order_id: $(e.currentTarget).data('order_id'),
-            product_id: $(e.currentTarget).data('product_id'),
-            amount: $(e.currentTarget).data('amount'),
+            user_id: $(e.currentTarget).data('user_id'),
+            address: $(e.currentTarget).data('address'),
+            date_create: $(e.currentTarget).data('date_create'),
             status: $(e.currentTarget).data('status'),
         }, function () {
             location.reload();

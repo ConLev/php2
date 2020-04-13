@@ -13,7 +13,7 @@ class DB
 
     protected function __construct()
     {
-        $this->pdo = new PDO('mysql:dbname=geek_brains_shop;host=localhost', 'geek_brains', '123123');
+        $this->pdo = new PDO('mysql:dbname=geek_brains_shop;host=db', 'root', 'root');
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->pdo->exec('SET NAMES utf8');
     }

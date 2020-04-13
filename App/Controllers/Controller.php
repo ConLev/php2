@@ -25,8 +25,9 @@ abstract class Controller
 
         $story = isset($_COOKIE['story']) ? unserialize($_COOKIE['story']) : [];
         date_default_timezone_set("Europe/Moscow");
-        $path = $_GET['path'] ?? '';
-        array_unshift($story, date('H:i:s') . ' - ' . 'http://' . $_SERVER['SERVER_NAME'] . '/'
+//        $path = $_GET['path'] ?? '';
+        $path = $_SERVER['REQUEST_URI'] ?? '';
+        array_unshift($story, date('H:i:s') . ' - ' . 'http://' . $_SERVER['HTTP_HOST']
             . $path);
         $story = array_slice($story, 0, 5);
         $newCookie = serialize($story);

@@ -18,7 +18,7 @@
         //Функция AJAX загрузки товаров
         function getProducts() {
             $.ajax({
-                url: "/products/?rawProducts=1&page=" + ++currentPage,
+                url: "/products/index/?rawProducts=1&page=" + ++currentPage,
                 success: function (data) {
                     if (data.length) {
                         $productsList.append(data);

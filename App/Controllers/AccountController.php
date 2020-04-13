@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\Orders;
 use App\Models\OrdersProducts;
-use Exception;
 
 class AccountController extends Controller
 {
@@ -24,24 +24,20 @@ class AccountController extends Controller
     public function index()
     {
         if (isset($this->userLogin) && isset($this->userName)) {
-            try {
-                $orders = OrdersProducts::getWithProducts($this->admin, $this->id);
-//                die;
-                return $this->render([
-                    'title' => 'user account',
-                    'h1' => 'Личный кабинет',
-                    'name' => $this->userName,
-                    'login' => $this->userLogin,
-                    'admin' => $this->admin,
-                    'pages' => unserialize($_COOKIE['story']),
-                    'orders' => $orders,
-                    'year' => date("Y"),
-                ]);
 
-            } catch (Exception $e) {
-                die ('ERROR: ' . $e->getMessage());
-            }
-
+            $orders = ($this->admin) ? Orders::getOrders() : Orders::getUserOrders($this->id);
+            $ordersProducts = OrdersProducts::getWithProducts($this->admin, $this->id);
+            return $this->render([
+                'title' => 'user account',
+                'h1' => 'Личный кабинет',
+                'name' => $this->userName,
+                'login' => $this->userLogin,
+                'admin' => $this->admin,
+                'pages' => unserialize($_COOKIE['story']),
+                'orders' => $orders,
+                'ordersProducts' => $ordersProducts,
+                'year' => date("Y"),
+            ]);
         } else {
             header("Location: /authentication/", TRUE, 301);
         }

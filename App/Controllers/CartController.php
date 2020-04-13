@@ -14,7 +14,7 @@ class CartController extends Controller
 
     public function __construct()
     {
-        $this->userLogin = $_SESSION['login']->login;
+        $this->userLogin = ($_SESSION['login']) ? $_SESSION['login']->login : null;
         $this->userName = $_SESSION['login']->name;
         $this->id = $_SESSION['login']->id;
         Controller::__construct();
@@ -23,19 +23,15 @@ class CartController extends Controller
     public function index()
     {
         if (isset($this->userLogin) && isset($this->userName)) {
-            try {
-                $products = Cart::getBasket($this->id);
 
-                return $this->render([
-                    'title' => 'cart',
-                    'h1' => 'Корзина',
-                    'products' => $products,
-                    'year' => date('Y'),
-                ]);
+            $products = Cart::getBasket($this->id);
 
-            } catch (Exception $e) {
-                die ('ERROR: ' . $e->getMessage());
-            }
+            return $this->render([
+                'title' => 'cart',
+                'h1' => 'Корзина',
+                'products' => $products,
+                'year' => date('Y'),
+            ]);
         } else {
             header("Location: /authentication/", TRUE, 301);
         }
@@ -82,9 +78,8 @@ class CartController extends Controller
 
         if ($result) {
             return true;
-        } else {
-            throw new Exception('Ошибка при обновлении корзины');
         }
+        throw new Exception('Ошибка при обновлении корзины');
     }
 
     /**

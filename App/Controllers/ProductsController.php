@@ -53,6 +53,8 @@ class ProductsController extends Controller
             $price = $_POST['price'] ?? '';
             $discount = $_POST['discount'] ?? '';
             $image = $_POST['image'] ?? '';
+            $dateCreate = $_POST['dateCreate'] ?? '';
+            $dateChange = date('Y-m-d H:i:s') ?? '';
             $isActive = $_POST['isActive'] ?? '';
             $categoryId = $_POST['categoryId'] ?? '';
             $h1 = 'Обновить товар';
@@ -60,11 +62,12 @@ class ProductsController extends Controller
             $this->template = $template = 'updateProduct.html';
             $product = Products::getByKey($current_id);
 
-            if ($name && $description && $price && $discount && $image) {
+            if ($name && $description && $price && $discount && $image && $dateCreate && $dateChange) {
                 //пытаемся обновить товар
                 $attributes = ['id' => (int)$current_id, 'name' => $name, 'description' => $description,
-                    'price' => $price, 'discount' => $discount, 'image' => $image, 'isActive' => $isActive,
-                    'categoryId' => $categoryId, 'current_id' => $current_id];
+                    'price' => $price, 'discount' => $discount, 'image' => $image, 'dateCreate' => $dateCreate,
+                    'dateChange' => $dateChange, 'isActive' => $isActive, 'categoryId' => $categoryId,
+                    'current_id' => $current_id];
                 $product = new Products($attributes);
                 $result = $product->save();
                 //при успешном обновлении возвращаемся на страницу просмотра товаров
@@ -94,7 +97,8 @@ class ProductsController extends Controller
         $description = $_POST['description'] ?? '';
         $price = $_POST['price'] ?? '';
         $discount = $_POST['discount'] ?? '';
-        $image = $_POST['image'] ?? '';
+        $image = $_POST['image'] ? $_POST['image'] : 'img/no-image.jpeg';
+        $dateCreate = date('Y-m-d H:i:s') ?? '';
         $isActive = $_POST['isActive'] ?? '';
         $categoryId = $_POST['categoryId'] ?? '';
         $h1 = 'Добавить товар';
@@ -102,10 +106,11 @@ class ProductsController extends Controller
         try {
             $this->template = $template = 'createProduct.html';
 
-            if ($name && $description && $price && $image) {
+            if ($name && $description && $price && $image && $dateCreate) {
                 //пытаемся добавить товар
                 $attributes = ['name' => $name, 'description' => $description, 'price' => $price,
-                    'discount' => $discount, 'image' => $image, 'isActive' => $isActive, 'categoryId' => $categoryId];
+                    'discount' => $discount, 'image' => $image, 'dateCreate' => $dateCreate, 'isActive' => $isActive,
+                    'categoryId' => $categoryId];
                 $product = new Products($attributes);
                 $result = $product->save();
                 //при успешном добавлении товара возвращаемся на страницу просмотра товаров

@@ -47,6 +47,28 @@ class Orders extends Model
         if (empty($usersOrders)) {
             return $usersOrders;
         }
+
+        // Получаем ID пользователей
+        $idsUsers = array_column($usersOrders, 'user_id');
+
+        // Получаем пользователей
+        $users = Authentication::get([[
+            'col' => 'id',
+            'oper' => 'IN',
+            'value' => '(' . implode(', ', $idsUsers) . ')',
+        ]]);
+
+        // INDEX BY KEY
+        // Преобразуем нашу коллекцию в индексированную, то есть вида [user_id => User]
+        $indexedUsers = [];
+        foreach ($users as $user) {
+            $indexedUsers[$user->id] = $user;
+        }
+
+        // Добавляем к каждому заказу пользователя
+        foreach ($usersOrders as &$item) {
+            $item->user = $indexedUsers[$item->user_id] ?? null;
+        }
         return $usersOrders;
     }
 

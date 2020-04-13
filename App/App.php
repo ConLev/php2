@@ -21,7 +21,8 @@ class App
         $this->session = &$_SESSION;
 
         try {
-            $path = $_REQUEST['path'] ?? '';
+//            $path = $_REQUEST['path'] ?? '';
+            $path = $_SERVER['REQUEST_URI'] ?? '';
 
             $params = [];
             $api = false;
