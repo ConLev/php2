@@ -5,7 +5,7 @@
     }
   },
   "require": {
-    "twig/twig": "^2.0",
+    "twig/twig": "^3.11",
     "ext-json": "*",
     "ext-mysqli": "*",
     "ext-pdo": "*"
